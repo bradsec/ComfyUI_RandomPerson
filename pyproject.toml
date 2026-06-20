@@ -1,7 +1,7 @@
 [project]
 name = "comfyui_randomperson"
 description = "Generate randomised, structured physical person descriptions for image-generation prompts. Sex-aware traits, per-category random/allow_list/fixed/off modes, age ranges, and individual output pins. Located under Add Node > utils. Node name: Random Person Description."
-version = "1.0.0"
+version = "1.0.1"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 dependencies = []

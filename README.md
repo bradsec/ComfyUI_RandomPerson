@@ -29,7 +29,7 @@ muscular build, reading glasses, bold lipstick
 1. Copy the `ComfyUI_RandomPerson` folder into your `ComfyUI/custom_nodes/` directory
 2. Restart ComfyUI
 
-The node appears in the **Add Node** menu under **utils → Random Person Description**.
+The node appears in the **Add Node** menu under **utils > Random Person Description**.
 
 ---
 
@@ -61,7 +61,7 @@ Wire `description` directly into a text prompt node, or use individual pins to r
 
 | Control | Purpose |
 |---|---|
-| `seed` | Fixed seed — use the same value to reproduce an identical result |
+| `seed` | Fixed seed, use the same value to reproduce an identical result |
 | `randomize` | When **on**, ignores the seed and picks a new random person every run |
 
 ### Sex
@@ -76,7 +76,7 @@ Every attribute category (nationality, complexion, skin texture, eyes, face shap
 
 | Control | What it does |
 |---|---|
-| **mode** | How the value is chosen — see Mode Options below |
+| **mode** | How the value is chosen, see Mode Options below |
 | **allow_list** | Comma-separated list of values to draw from (used when mode = `allow_list`) |
 | **fixed** | A specific value to always use (used when mode = `fixed`) |
 
@@ -87,16 +87,16 @@ Every attribute category (nationality, complexion, skin texture, eyes, face shap
 | `random` | Pick any value from the full list for the resolved sex |
 | `allow_list` | Pick randomly from only the values you specify in the allow_list field |
 | `fixed` | Always use the value selected in the fixed dropdown |
-| `off` | **Skip this attribute entirely** — it will not appear in the description |
+| `off` | **Skip this attribute entirely**, it will not appear in the description |
 
-> **Tip — turning off attributes:** Set any category's mode to `off` to remove it from the output completely. For example, if you don't want a body type in the description, set `body_type_mode` to `off`.
+> **Tip: turning off attributes:** Set any category's mode to `off` to remove it from the output completely. For example, if you don't want a body type in the description, set `body_type_mode` to `off`.
 
-#### Allow List — Custom Values
+#### Allow List: Custom Values
 
 The allow_list field accepts comma-separated values. These can be:
 
-- **Labels from the JSON data**, e.g. `auburn, golden blonde, platinum blonde` — the node will pick randomly from the matched entries
-- **Custom values not in any list**, e.g. `fire engine red, pastel pink` — unknown tokens are treated as literal descriptors and added to the pool
+- **Labels from the JSON data**, e.g. `auburn, golden blonde, platinum blonde`, the node will pick randomly from the matched entries
+- **Custom values not in any list**, e.g. `fire engine red, pastel pink`, unknown tokens are treated as literal descriptors and added to the pool
 
 This means you can mix standard and custom values freely:
 ```
@@ -114,7 +114,7 @@ auburn, copper red, fire engine red
 
 ### Extra Attributes
 
-A free-text area at the bottom of the node. Enter any custom descriptors separated by commas — they are appended to the end of the description exactly as written.
+A free-text area at the bottom of the node. Enter any custom descriptors separated by commas, they are appended to the end of the description exactly as written.
 
 ```
 wearing glasses, tattoo on left arm, silver hoop earrings
@@ -140,7 +140,7 @@ smooth, clear, dewy, glowing, freckled, fine lines, wrinkled, sun-spotted, acne 
 ### Eye Colour (23)
 brown, dark brown, light brown, near black, hazel, hazel green, hazel brown, amber, blue, light blue, dark blue, ice blue, grey blue, steel blue, green, light green, dark green, olive green, blue green, grey, pale grey, dark grey, grey green
 
-> Eye colour descriptions are deliberately grounded — e.g. `green` outputs as `muted natural green eyes` and `amber` as `warm amber-brown eyes` — to prevent image models rendering oversaturated or unrealistic eye colours.
+> Eye colour descriptions are deliberately grounded: e.g. `green` outputs as `muted natural green eyes` and `amber` as `warm amber-brown eyes`, to prevent image models rendering oversaturated or unrealistic eye colours.
 
 ### Hair Colour
 **Male (25):** jet black, black, dark brown, chestnut brown, warm brown, brown, medium brown, light brown, auburn, copper red, red, dark red, warm honey, golden blonde, blonde, dark blonde, light blonde, sandy, ash blonde, salt and pepper, silver, ash grey, dark grey, grey, white
@@ -208,25 +208,25 @@ none, natural makeup, soft makeup, minimal makeup, bold makeup, glam makeup, smo
 
 ## Tips
 
-**Reproducing a result** — when you find a description you like, set `randomize` to off and note the seed value from the `seed` output pin. Set `seed` to that value and re-queue to get the same result.
+**Reproducing a result**: when you find a description you like, set `randomize` to off and note the seed value from the `seed` output pin. Set `seed` to that value and re-queue to get the same result.
 
-**Locking some attributes, randomising others** — set the attributes you want fixed to `fixed` mode, leave the rest on `random`. For example, fix nationality to `Japanese` and complexion to `warm medium` while letting everything else randomise.
+**Locking some attributes, randomising others**: set the attributes you want fixed to `fixed` mode, leave the rest on `random`. For example, fix nationality to `Japanese` and complexion to `warm medium` while letting everything else randomise.
 
-**Building a character type** — use `allow_list` mode with a curated set of values per category to constrain randomness to a character archetype. For example, for a rugged older man: `age_min = 45`, `body_type_allow_list = athletic, broad shouldered, muscular`, `hair_color_allow_list = salt and pepper, silver, grey`.
+**Building a character type**: use `allow_list` mode with a curated set of values per category to constrain randomness to a character archetype. For example, for a rugged older man: `age_min = 45`, `body_type_allow_list = athletic, broad shouldered, muscular`, `hair_color_allow_list = salt and pepper, silver, grey`.
 
-**Adding detail the node doesn't cover** — use the `extra_attributes` text area for anything else: clothing, accessories, expression, pose hints, scars, tattoos, jewellery, makeup, etc. Each comma-separated entry is appended as its own descriptor.
+**Adding detail the node doesn't cover**: use the `extra_attributes` text area for anything else: clothing, accessories, expression, pose hints, scars, tattoos, jewellery, makeup, etc. Each comma-separated entry is appended as its own descriptor.
 
-**Turning off attributes you don't need** — if your workflow already handles body type from another node, or you don't want age in the prompt, set that category's mode to `off`. The attribute disappears from the description entirely.
+**Turning off attributes you don't need**: if your workflow already handles body type from another node, or you don't want age in the prompt, set that category's mode to `off`. The attribute disappears from the description entirely.
 
 ---
 
 ## Data Files
 
-All values live in `data/` as plain JSON files. You can edit them directly to add, remove, or change any value — no code changes needed. New entries take effect on the next ComfyUI restart.
+All values live in `data/` as plain JSON files. You can edit them directly to add, remove, or change any value, no code changes needed. New entries take effect on the next ComfyUI restart.
 
 ```
 data/
-├── shared/          ← used by both male and female
+├── shared/          # used by both male and female
 │   ├── nationality.json
 │   ├── complexion.json
 │   ├── skin_texture.json
@@ -253,7 +253,7 @@ Each JSON entry follows this structure:
 ```json
 { "label": "auburn", "description": "auburn" }
 ```
-The `label` is what appears in dropdowns. The `description` is what goes into the prompt. They can differ — for example, eye colours use grounded descriptions (`"label": "green", "description": "muted natural green eyes"`), and `clean shaven` / `neutral` / `none` use an empty description so they add nothing to the output.
+The `label` is what appears in dropdowns. The `description` is what goes into the prompt. They can differ: for example, eye colours use grounded descriptions (`"label": "green", "description": "muted natural green eyes"`), and `clean shaven` / `neutral` / `none` use an empty description so they add nothing to the output.
 
 A leftover `face_feature.json` also exists under `shared/` from earlier data; it is not loaded (facial features are sex-gated). Safe to ignore or delete.
 
@@ -277,3 +277,9 @@ python -m unittest test_random_person -v
 - No additional pip packages required
 
 The node registers on both the legacy V1 dict API (`NODE_CLASS_MAPPINGS`) and the V3 schema API (`comfy_entrypoint`), so it loads on older and newer ComfyUI builds alike. The shared selection core is wrapped by thin adapters for each API.
+
+---
+
+## Support
+
+If you find this useful, please consider [starring the repo](https://github.com/bradsec/ComfyUI_RandomPerson). Stars help other people discover these nodes.
