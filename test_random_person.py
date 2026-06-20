@@ -6,7 +6,7 @@ Run: python -m unittest test_random_person -v
 
 import unittest
 
-import random_person_node as core
+import nodes as core
 
 
 def cat_args(**overrides):
@@ -64,6 +64,15 @@ class TestSelection(unittest.TestCase):
 
     def test_sex_resolved_from_random(self):
         self.assertIn(run(sex="random")[1], ("male", "female"))
+
+    def test_flair_categories_default_off(self):
+        # Optional categories must ship with mode default "off"; identity
+        # categories must default "random".
+        req = core.RandomPersonNode.INPUT_TYPES()["required"]
+        for key in core.DEFAULT_OFF:
+            self.assertEqual(req[f"{key}_mode"][1]["default"], "off", key)
+        for key in ("nationality", "complexion", "eyes", "hair_color", "body_type"):
+            self.assertEqual(req[f"{key}_mode"][1]["default"], "random", key)
 
     def test_female_never_grows_facial_hair(self):
         for seed in range(40):

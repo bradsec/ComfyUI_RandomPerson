@@ -91,6 +91,14 @@ Every attribute category (nationality, complexion, skin texture, eyes, face shap
 
 > **Tip: turning off attributes:** Set any category's mode to `off` to remove it from the output completely. For example, if you don't want a body type in the description, set `body_type_mode` to `off`.
 
+#### Default modes
+
+Core identity categories (nationality, complexion, eyes, face shape, nose shape, mouth shape, hair colour/style/length, body type, plus age and sex) default to `random`. The optional "flair" categories default to `off` so the base person stays clean and realistic, and you opt them in per category:
+
+`skin_texture`, `face_feature`, `facial_hair`, `expression`, `accessories`, `makeup`
+
+The example outputs above have several of these enabled to show the full range.
+
 #### Allow List: Custom Values
 
 The allow_list field accepts comma-separated values. These can be:

@@ -121,6 +121,17 @@ CATEGORY_SPECS = [
 SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape",
              "nose_shape", "mouth_shape", "face_feature", "facial_hair", "makeup"}
 
+# Optional "flair" categories default to mode "off" so the base description stays
+# clean and realistic; the user opts them in per category. Core identity
+# categories (nationality, complexion, eyes, face/nose/mouth shape, hair, body)
+# default to "random".
+DEFAULT_OFF = {"skin_texture", "face_feature", "facial_hair",
+               "expression", "accessories", "makeup"}
+
+
+def _mode_default(key):
+    return "off" if key in DEFAULT_OFF else "random"
+
 # Tooltips (shared by both APIs).
 _SEED_TIP   = "Seed for reproducibility. With randomize off, the same seed reproduces the same person."
 _RAND_TIP   = "On: pick a new random person every run, ignoring the seed widget. Off: use the seed."
@@ -399,7 +410,7 @@ class RandomPersonNode:
             "sex":       (SEX_MODES, {"default": "random", "tooltip": _SEX_TIP}),
         }
         for key, fixed_labels, placeholder in CATEGORY_SPECS:
-            required[f"{key}_mode"]       = (MODES, {"default": "random", "tooltip": _MODE_TIP})
+            required[f"{key}_mode"]       = (MODES, {"default": _mode_default(key), "tooltip": _MODE_TIP})
             required[f"{key}_allow_list"] = ("STRING", {"default": "", "multiline": False,
                                                         "placeholder": placeholder, "tooltip": _ALLOW_TIP})
             required[f"{key}_fixed"]      = (fixed_labels, {"default": "(none)", "tooltip": _FIXED_TIP})
@@ -442,7 +453,7 @@ try:
             ]
             for key, fixed_labels, placeholder in CATEGORY_SPECS:
                 inputs += [
-                    io.Combo.Input(f"{key}_mode", options=MODES, default="random", tooltip=_MODE_TIP),
+                    io.Combo.Input(f"{key}_mode", options=MODES, default=_mode_default(key), tooltip=_MODE_TIP),
                     io.String.Input(f"{key}_allow_list", default="", multiline=False,
                                     placeholder=placeholder, tooltip=_ALLOW_TIP),
                     io.Combo.Input(f"{key}_fixed", options=fixed_labels, default="(none)", tooltip=_FIXED_TIP),
