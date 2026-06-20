@@ -26,6 +26,12 @@ muscular build, reading glasses, bold lipstick
 
 ## Installation
 
+### ComfyUI Manager (recommended)
+
+In ComfyUI, open **Manager > Custom Nodes Manager**, search for **ComfyUI_RandomPerson**, click **Install**, then restart ComfyUI.
+
+### Manual install
+
 1. Copy the `ComfyUI_RandomPerson` folder into your `ComfyUI/custom_nodes/` directory
 2. Restart ComfyUI
 
