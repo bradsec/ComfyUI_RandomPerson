@@ -1,0 +1,126 @@
+[
+  {
+    "label": "buzz cut",
+    "description": "buzz cut"
+  },
+  {
+    "label": "crew cut",
+    "description": "crew cut"
+  },
+  {
+    "label": "cropped short",
+    "description": "cropped short"
+  },
+  {
+    "label": "textured crop",
+    "description": "textured crop"
+  },
+  {
+    "label": "undercut",
+    "description": "undercut"
+  },
+  {
+    "label": "slicked back",
+    "description": "slicked back"
+  },
+  {
+    "label": "side part",
+    "description": "side part"
+  },
+  {
+    "label": "quiff",
+    "description": "quiff"
+  },
+  {
+    "label": "pompadour",
+    "description": "pompadour"
+  },
+  {
+    "label": "messy medium",
+    "description": "messy medium"
+  },
+  {
+    "label": "curly medium",
+    "description": "medium curly"
+  },
+  {
+    "label": "coiled natural",
+    "description": "coiled natural"
+  },
+  {
+    "label": "locs short",
+    "description": "short locs"
+  },
+  {
+    "label": "locs long",
+    "description": "long locs"
+  },
+  {
+    "label": "cornrows",
+    "description": "cornrows"
+  },
+  {
+    "label": "bun",
+    "description": "bun"
+  },
+  {
+    "label": "low ponytail",
+    "description": "low ponytail"
+  },
+  {
+    "label": "braids short",
+    "description": "short braids"
+  },
+  {
+    "label": "taper fade",
+    "description": "taper fade"
+  },
+  {
+    "label": "skin fade",
+    "description": "skin fade"
+  },
+  {
+    "label": "straight",
+    "description": "straight"
+  },
+  {
+    "label": "curly",
+    "description": "curly"
+  },
+  {
+    "label": "wavy",
+    "description": "wavy"
+  },
+  {
+    "label": "mohawk",
+    "description": "mohawk"
+  },
+  {
+    "label": "faux hawk",
+    "description": "faux hawk"
+  },
+  {
+    "label": "dreadlocks",
+    "description": "dreadlocks"
+  },
+  {
+    "label": "afro",
+    "description": "afro"
+  },
+  {
+    "label": "caesar cut",
+    "description": "caesar cut"
+  },
+  {
+    "label": "french crop",
+    "description": "french crop"
+  },
+  {
+    "label": "bowl cut",
+    "description": "bowl cut"
+  },
+  {
+    "label": "mullet",
+    "description": "mullet"
+  }
+]

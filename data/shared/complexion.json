@@ -1,0 +1,17 @@
+[
+  { "label": "porcelain",    "description": "porcelain"    },
+  { "label": "fair",         "description": "fair"         },
+  { "label": "light",        "description": "light"        },
+  { "label": "light medium", "description": "light medium" },
+  { "label": "warm beige",   "description": "warm beige"   },
+  { "label": "warm olive",   "description": "warm olive"   },
+  { "label": "olive",        "description": "olive"        },
+  { "label": "medium",       "description": "medium"       },
+  { "label": "warm medium",  "description": "warm medium"  },
+  { "label": "tan",          "description": "tan"          },
+  { "label": "golden brown", "description": "golden brown" },
+  { "label": "medium brown", "description": "medium brown" },
+  { "label": "deep brown",   "description": "deep brown"   },
+  { "label": "deep",         "description": "deep"         },
+  { "label": "ebony",        "description": "ebony"        }
+]

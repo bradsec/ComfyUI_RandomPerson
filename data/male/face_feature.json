@@ -1,0 +1,54 @@
+[
+  {
+    "label": "heavy brow",
+    "description": "a heavy brow"
+  },
+  {
+    "label": "scar through eyebrow",
+    "description": "a scar through one eyebrow"
+  },
+  {
+    "label": "deep set eyes",
+    "description": "deep-set eyes"
+  },
+  {
+    "label": "high cheekbones",
+    "description": "high cheekbones"
+  },
+  {
+    "label": "cleft chin",
+    "description": "a cleft chin"
+  },
+  {
+    "label": "strong jaw",
+    "description": "a strong, defined jaw"
+  },
+  {
+    "label": "laugh lines",
+    "description": "laugh lines"
+  },
+  {
+    "label": "gap toothed smile",
+    "description": "a gap-toothed smile"
+  },
+  {
+    "label": "dimples",
+    "description": "dimples"
+  },
+  {
+    "label": "freckles",
+    "description": "light freckles"
+  },
+  {
+    "label": "mole on cheek",
+    "description": "a mole on one cheek"
+  },
+  {
+    "label": "birthmark on jaw",
+    "description": "a birthmark on the jaw"
+  },
+  {
+    "label": "weathered skin",
+    "description": "weathered, sun-aged skin"
+  }
+]

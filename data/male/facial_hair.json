@@ -1,0 +1,46 @@
+[
+  {
+    "label": "clean shaven",
+    "description": ""
+  },
+  {
+    "label": "light stubble",
+    "description": "light stubble"
+  },
+  {
+    "label": "heavy stubble",
+    "description": "heavy stubble"
+  },
+  {
+    "label": "short beard",
+    "description": "a short beard"
+  },
+  {
+    "label": "full beard",
+    "description": "a full beard"
+  },
+  {
+    "label": "goatee",
+    "description": "a goatee"
+  },
+  {
+    "label": "moustache",
+    "description": "a moustache"
+  },
+  {
+    "label": "circle beard",
+    "description": "a circle beard"
+  },
+  {
+    "label": "van dyke",
+    "description": "a van dyke beard"
+  },
+  {
+    "label": "mutton chops",
+    "description": "mutton chop sideburns"
+  },
+  {
+    "label": "soul patch",
+    "description": "a soul patch"
+  }
+]

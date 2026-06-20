@@ -1,0 +1,158 @@
+[
+  {
+    "label": "cropped short",
+    "description": "cropped short"
+  },
+  {
+    "label": "pixie",
+    "description": "pixie cut"
+  },
+  {
+    "label": "textured crop",
+    "description": "textured crop"
+  },
+  {
+    "label": "chin length bob",
+    "description": "chin-length bob"
+  },
+  {
+    "label": "jaw length bob",
+    "description": "jaw-length bob"
+  },
+  {
+    "label": "layered",
+    "description": "layered"
+  },
+  {
+    "label": "loose waves",
+    "description": "loose waves"
+  },
+  {
+    "label": "loose curls",
+    "description": "loose curls"
+  },
+  {
+    "label": "tight curls",
+    "description": "tight curls"
+  },
+  {
+    "label": "coiled natural",
+    "description": "coiled natural"
+  },
+  {
+    "label": "locs",
+    "description": "locs"
+  },
+  {
+    "label": "braids",
+    "description": "braids"
+  },
+  {
+    "label": "cornrows",
+    "description": "cornrows"
+  },
+  {
+    "label": "bun",
+    "description": "bun"
+  },
+  {
+    "label": "high ponytail",
+    "description": "high ponytail"
+  },
+  {
+    "label": "low ponytail",
+    "description": "low ponytail"
+  },
+  {
+    "label": "braid over shoulder",
+    "description": "braid over shoulder"
+  },
+  {
+    "label": "half up",
+    "description": "half up half down"
+  },
+  {
+    "label": "messy",
+    "description": "messy"
+  },
+  {
+    "label": "pulled back loose",
+    "description": "loosely pulled back"
+  },
+  {
+    "label": "curtain bangs",
+    "description": "curtain bangs"
+  },
+  {
+    "label": "space buns",
+    "description": "space buns"
+  },
+  {
+    "label": "twist out",
+    "description": "twist out"
+  },
+  {
+    "label": "straight",
+    "description": "straight"
+  },
+  {
+    "label": "curly",
+    "description": "curly"
+  },
+  {
+    "label": "wavy",
+    "description": "wavy"
+  },
+  {
+    "label": "mohawk",
+    "description": "mohawk"
+  },
+  {
+    "label": "faux hawk",
+    "description": "faux hawk"
+  },
+  {
+    "label": "dreadlocks",
+    "description": "dreadlocks"
+  },
+  {
+    "label": "afro",
+    "description": "afro"
+  },
+  {
+    "label": "blunt cut",
+    "description": "blunt cut"
+  },
+  {
+    "label": "shag",
+    "description": "shag cut"
+  },
+  {
+    "label": "wolf cut",
+    "description": "wolf cut"
+  },
+  {
+    "label": "wispy",
+    "description": "wispy"
+  },
+  {
+    "label": "french braid",
+    "description": "french braid"
+  },
+  {
+    "label": "fishtail braid",
+    "description": "fishtail braid"
+  },
+  {
+    "label": "updo",
+    "description": "updo"
+  },
+  {
+    "label": "chignon",
+    "description": "chignon"
+  },
+  {
+    "label": "mullet",
+    "description": "mullet"
+  }
+]

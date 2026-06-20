@@ -1,0 +1,46 @@
+[
+  {
+    "label": "neutral",
+    "description": ""
+  },
+  {
+    "label": "soft smile",
+    "description": "a soft smile"
+  },
+  {
+    "label": "warm smile",
+    "description": "a warm smile"
+  },
+  {
+    "label": "slight smile",
+    "description": "a slight smile"
+  },
+  {
+    "label": "serious",
+    "description": "a serious expression"
+  },
+  {
+    "label": "stern",
+    "description": "a stern expression"
+  },
+  {
+    "label": "pensive",
+    "description": "a pensive look"
+  },
+  {
+    "label": "confident",
+    "description": "a confident expression"
+  },
+  {
+    "label": "relaxed",
+    "description": "a relaxed expression"
+  },
+  {
+    "label": "intense gaze",
+    "description": "an intense gaze"
+  },
+  {
+    "label": "laughing",
+    "description": "laughing"
+  }
+]

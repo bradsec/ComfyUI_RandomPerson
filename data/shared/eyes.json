@@ -1,0 +1,94 @@
+[
+  {
+    "label": "brown",
+    "description": "warm medium brown eyes"
+  },
+  {
+    "label": "dark brown",
+    "description": "deep dark brown eyes"
+  },
+  {
+    "label": "light brown",
+    "description": "soft light brown eyes"
+  },
+  {
+    "label": "near black",
+    "description": "near-black dark brown eyes"
+  },
+  {
+    "label": "hazel",
+    "description": "hazel eyes with brown and green flecks"
+  },
+  {
+    "label": "hazel green",
+    "description": "hazel eyes with a green tint"
+  },
+  {
+    "label": "hazel brown",
+    "description": "hazel eyes with a warm brown tint"
+  },
+  {
+    "label": "amber",
+    "description": "warm amber-brown eyes"
+  },
+  {
+    "label": "blue",
+    "description": "natural blue eyes"
+  },
+  {
+    "label": "light blue",
+    "description": "soft light blue eyes"
+  },
+  {
+    "label": "dark blue",
+    "description": "deep dark blue eyes"
+  },
+  {
+    "label": "ice blue",
+    "description": "pale ice-blue eyes"
+  },
+  {
+    "label": "grey blue",
+    "description": "muted grey-blue eyes"
+  },
+  {
+    "label": "steel blue",
+    "description": "cool steel-blue eyes"
+  },
+  {
+    "label": "green",
+    "description": "muted natural green eyes"
+  },
+  {
+    "label": "light green",
+    "description": "soft pale green eyes"
+  },
+  {
+    "label": "dark green",
+    "description": "deep dark green eyes"
+  },
+  {
+    "label": "olive green",
+    "description": "muted olive-green eyes"
+  },
+  {
+    "label": "blue green",
+    "description": "soft blue-green eyes"
+  },
+  {
+    "label": "grey",
+    "description": "natural grey eyes"
+  },
+  {
+    "label": "pale grey",
+    "description": "pale light grey eyes"
+  },
+  {
+    "label": "dark grey",
+    "description": "deep dark grey eyes"
+  },
+  {
+    "label": "grey green",
+    "description": "muted grey-green eyes"
+  }
+]

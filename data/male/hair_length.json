@@ -1,0 +1,9 @@
+[
+  { "label": "shaved",        "description": "shaved"         },
+  { "label": "very short",    "description": "very short"     },
+  { "label": "short",         "description": "short"          },
+  { "label": "ear length",    "description": "ear length"     },
+  { "label": "medium",        "description": "medium length"  },
+  { "label": "shoulder",      "description": "shoulder length"},
+  { "label": "long",          "description": "long"           }
+]

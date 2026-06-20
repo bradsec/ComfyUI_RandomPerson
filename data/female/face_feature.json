@@ -1,0 +1,50 @@
+[
+  {
+    "label": "high cheekbones",
+    "description": "high cheekbones"
+  },
+  {
+    "label": "scar through eyebrow",
+    "description": "a faint scar through one eyebrow"
+  },
+  {
+    "label": "deep set eyes",
+    "description": "deep-set eyes"
+  },
+  {
+    "label": "wide eyes",
+    "description": "wide, expressive eyes"
+  },
+  {
+    "label": "cleft chin",
+    "description": "a softly cleft chin"
+  },
+  {
+    "label": "dimples",
+    "description": "dimples"
+  },
+  {
+    "label": "gap toothed smile",
+    "description": "a gap-toothed smile"
+  },
+  {
+    "label": "freckles",
+    "description": "light freckles across the cheeks"
+  },
+  {
+    "label": "beauty mark",
+    "description": "a beauty mark above the lip"
+  },
+  {
+    "label": "birthmark",
+    "description": "a small birthmark"
+  },
+  {
+    "label": "laugh lines",
+    "description": "laugh lines"
+  },
+  {
+    "label": "arched brows",
+    "description": "finely arched brows"
+  }
+]

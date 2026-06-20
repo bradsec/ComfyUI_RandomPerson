@@ -1,0 +1,42 @@
+[
+  {
+    "label": "none",
+    "description": ""
+  },
+  {
+    "label": "natural makeup",
+    "description": "natural makeup"
+  },
+  {
+    "label": "soft makeup",
+    "description": "softly applied makeup"
+  },
+  {
+    "label": "minimal makeup",
+    "description": "minimal makeup"
+  },
+  {
+    "label": "bold makeup",
+    "description": "bold makeup"
+  },
+  {
+    "label": "glam makeup",
+    "description": "glamorous makeup"
+  },
+  {
+    "label": "smokey eye",
+    "description": "a smokey eye"
+  },
+  {
+    "label": "winged eyeliner",
+    "description": "winged eyeliner"
+  },
+  {
+    "label": "red lipstick",
+    "description": "red lipstick"
+  },
+  {
+    "label": "bold lipstick",
+    "description": "bold lipstick"
+  }
+]

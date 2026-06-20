@@ -1,0 +1,10 @@
+[
+  { "label": "oval",       "description": "oval"       },
+  { "label": "round",      "description": "round"      },
+  { "label": "square",     "description": "square"     },
+  { "label": "heart",      "description": "heart"      },
+  { "label": "diamond",    "description": "diamond"    },
+  { "label": "oblong",     "description": "oblong"     },
+  { "label": "triangular", "description": "triangular" },
+  { "label": "angular",    "description": "angular"    }
+]

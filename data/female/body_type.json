@@ -1,0 +1,78 @@
+[
+  {
+    "label": "slim",
+    "description": "slim build"
+  },
+  {
+    "label": "lean",
+    "description": "lean build"
+  },
+  {
+    "label": "wiry",
+    "description": "wiry build"
+  },
+  {
+    "label": "petite",
+    "description": "petite build"
+  },
+  {
+    "label": "slight",
+    "description": "slight build"
+  },
+  {
+    "label": "average",
+    "description": "average build"
+  },
+  {
+    "label": "medium build",
+    "description": "medium build"
+  },
+  {
+    "label": "athletic",
+    "description": "athletic build"
+  },
+  {
+    "label": "muscular",
+    "description": "muscular build"
+  },
+  {
+    "label": "tall lean",
+    "description": "tall and lean build"
+  },
+  {
+    "label": "tall athletic",
+    "description": "tall and athletic build"
+  },
+  {
+    "label": "lanky",
+    "description": "lanky build"
+  },
+  {
+    "label": "pear",
+    "description": "pear-shaped build"
+  },
+  {
+    "label": "hourglass",
+    "description": "hourglass build"
+  },
+  {
+    "label": "curvy",
+    "description": "curvy build"
+  },
+  {
+    "label": "full figured",
+    "description": "full-figured build"
+  },
+  {
+    "label": "softly built",
+    "description": "softly built build"
+  },
+  {
+    "label": "heavyset",
+    "description": "heavyset build"
+  },
+  {
+    "label": "stocky",
+    "description": "stocky build"
+  }
+]

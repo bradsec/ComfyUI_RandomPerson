@@ -1,0 +1,16 @@
+[
+  { "label": "straight nose",       "description": "straight nose" },
+  { "label": "aquiline nose",       "description": "aquiline nose" },
+  { "label": "broad nose",          "description": "broad nose" },
+  { "label": "rounded nose tip",    "description": "rounded nose tip" },
+  { "label": "curved nose bridge",  "description": "curved nose bridge" },
+  { "label": "snub nose",           "description": "snub nose" },
+  { "label": "roman nose",          "description": "Roman nose" },
+  { "label": "wide nose",           "description": "wide nose" },
+  { "label": "flat nose",           "description": "flat nose" },
+  { "label": "narrow nose",         "description": "narrow nose" },
+  { "label": "upturned nose",       "description": "slightly upturned nose" },
+  { "label": "high nose bridge",    "description": "high nose bridge" },
+  { "label": "low nose bridge",     "description": "low nose bridge" },
+  { "label": "crooked nose",        "description": "crooked nose" }
+]

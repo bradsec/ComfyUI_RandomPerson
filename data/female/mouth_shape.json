@@ -1,0 +1,14 @@
+[
+  { "label": "full lips",           "description": "full lips" },
+  { "label": "thin lips",           "description": "thin lips" },
+  { "label": "wide mouth",          "description": "wide mouth" },
+  { "label": "narrow mouth",        "description": "narrow mouth" },
+  { "label": "bow shaped lips",     "description": "bow-shaped lips" },
+  { "label": "downturned mouth",    "description": "downturned mouth" },
+  { "label": "upturned mouth",      "description": "naturally upturned mouth" },
+  { "label": "defined cupids bow",  "description": "defined cupid's bow" },
+  { "label": "heart shaped lips",   "description": "heart-shaped lips" },
+  { "label": "rosebud lips",        "description": "rosebud lips" },
+  { "label": "prominent lower lip", "description": "prominent lower lip" },
+  { "label": "wide set lips",       "description": "wide-set lips" }
+]

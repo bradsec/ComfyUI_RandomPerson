@@ -1,0 +1,42 @@
+[
+  {
+    "label": "smooth",
+    "description": "smooth skin"
+  },
+  {
+    "label": "clear",
+    "description": "clear skin"
+  },
+  {
+    "label": "dewy",
+    "description": "dewy skin"
+  },
+  {
+    "label": "glowing",
+    "description": "glowing skin"
+  },
+  {
+    "label": "freckled",
+    "description": "freckled skin"
+  },
+  {
+    "label": "fine lines",
+    "description": "fine lines"
+  },
+  {
+    "label": "wrinkled",
+    "description": "wrinkled skin"
+  },
+  {
+    "label": "sun-spotted",
+    "description": "sun-spotted skin"
+  },
+  {
+    "label": "acne scars",
+    "description": "faint acne scarring"
+  },
+  {
+    "label": "ruddy",
+    "description": "a ruddy complexion"
+  }
+]

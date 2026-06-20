@@ -1,0 +1,50 @@
+[
+  {
+    "label": "none",
+    "description": ""
+  },
+  {
+    "label": "glasses",
+    "description": "glasses"
+  },
+  {
+    "label": "thin framed glasses",
+    "description": "thin-framed glasses"
+  },
+  {
+    "label": "round glasses",
+    "description": "round glasses"
+  },
+  {
+    "label": "thick framed glasses",
+    "description": "thick-framed glasses"
+  },
+  {
+    "label": "reading glasses",
+    "description": "reading glasses"
+  },
+  {
+    "label": "sunglasses",
+    "description": "sunglasses"
+  },
+  {
+    "label": "stud earrings",
+    "description": "stud earrings"
+  },
+  {
+    "label": "hoop earrings",
+    "description": "hoop earrings"
+  },
+  {
+    "label": "nose ring",
+    "description": "a nose ring"
+  },
+  {
+    "label": "nose stud",
+    "description": "a nose stud"
+  },
+  {
+    "label": "small ear piercings",
+    "description": "small ear piercings"
+  }
+]
