@@ -39,3 +39,7 @@ Thumbs.db
 # Claude Code files
 CLAUDE.md
 .claude/
+
+# Local planning / process docs (not part of the published package)
+docs/
+.superpowers/
