@@ -338,5 +338,52 @@ class TestSegmentNodes(unittest.TestCase):
                 self.assertIn(name, core.RETURN_NAMES, f"{_id}:{name}")
 
 
+class TestClothing(unittest.TestCase):
+
+    def test_clothing_defaults_off(self):
+        req = core.RandomPersonNode.INPUT_TYPES()["required"]
+        self.assertEqual(req["clothing_mode"][1]["default"], "off")
+
+    def test_clothing_is_sex_gated(self):
+        self.assertIn("clothing", core.SEX_GATED)
+
+    def test_clothing_pin_carries_value(self):
+        out = run(sex="female", clothing=("fixed", "", "leather jacket"))
+        idx = core.RETURN_NAMES.index("clothing")
+        self.assertEqual(out[idx], "a leather jacket")
+        self.assertIn("a leather jacket", out[0])
+
+    def test_male_never_gets_female_only_garment(self):
+        female_only_descs = {
+            "a blouse", "a camisole", "a cardigan", "a cocktail dress",
+            "a jumpsuit", "a knit sweater", "a maxi dress", "an off-shoulder top",
+            "a peplum top", "a sundress", "a wool coat", "a wrap dress",
+        }
+        for seed in range(30):
+            out = run(seed=seed, sex="male", clothing=("random", "", "(none)"))
+            idx = core.RETURN_NAMES.index("clothing")
+            val = out[idx]
+            if val:
+                self.assertNotIn(val, female_only_descs, f"seed={seed}: male got female-only '{val}'")
+
+    def test_female_never_gets_male_only_garment(self):
+        male_only_descs = {
+            "a flannel shirt", "a polo shirt", "a henley shirt", "a work shirt",
+            "a bomber jacket", "a crew-neck sweater", "a parka", "a three-piece suit",
+            "a tracksuit", "a wool overcoat",
+        }
+        for seed in range(30):
+            out = run(seed=seed, sex="female", clothing=("random", "", "(none)"))
+            idx = core.RETURN_NAMES.index("clothing")
+            val = out[idx]
+            if val:
+                self.assertNotIn(val, male_only_descs, f"seed={seed}: female got male-only '{val}'")
+
+    def test_style_node_exposes_clothing(self):
+        req = core.NODE_CLASS_MAPPINGS["RandomPersonStyle"].INPUT_TYPES()["required"]
+        self.assertIn("clothing_mode", req)
+        self.assertIn("clothing", core.NODE_CLASS_MAPPINGS["RandomPersonStyle"].RETURN_NAMES)
+
+
 if __name__ == "__main__":
     unittest.main()

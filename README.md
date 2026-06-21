@@ -6,7 +6,7 @@ Generates a randomised, structured physical description of a person to drop stra
 
 ## Purpose
 
-When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour and shape, eyebrows, face shape and distinctive features, hair, facial hair, build, shoulders, chest or bust, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
+When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour and shape, eyebrows, face shape and distinctive features, hair, facial hair, build, shoulders, chest or bust, expression, accessories, makeup, and clothing. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
 
 The nodes appear in the **Add Node** menu under **Random Person**:
 
@@ -15,7 +15,7 @@ The nodes appear in the **Add Node** menu under **Random Person**:
 - **Random Person: Face & Expression** - face shape, eyes, eyebrows, nose, mouth, distinctive features, expression.
 - **Random Person: Hair** - hair colour, style, length, facial hair.
 - **Random Person: Body** - build, shoulders, chest, bust size and shape.
-- **Random Person: Style** - accessories and makeup.
+- **Random Person: Style** - accessories, makeup, and clothing.
 
 The segment nodes are independent generators: each has its own seed and sex and emits its group's fragment. Concatenate the `description` outputs with any string node to assemble a full prompt.
 
@@ -64,6 +64,7 @@ The nodes appear in the **Add Node** menu under **Random Person**.
 | `expression` | Facial expression (empty for neutral) | `a soft smile` |
 | `accessories` | Eyewear / jewellery (empty for none) | `reading glasses` |
 | `makeup` | Makeup style (empty for none / male) | `bold lipstick` |
+| `clothing` | Garment / outfit (empty when off) | `a leather jacket` |
 | `seed` | The seed used (useful for reproducibility) | `481046155` |
 
 Wire `description` directly into a text prompt node, or use individual pins to route specific attributes to other parts of your workflow.
@@ -83,11 +84,11 @@ Wire `description` directly into a text prompt node, or use individual pins to r
 
 Dropdown: `random` / `male` / `female`
 
-When set to `male` or `female`, the dropdown options for hair style, hair colour, hair length, face shape, nose, mouth, body type, facial feature, facial hair, makeup, shoulders, chest, bust size, and bust shape automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
+When set to `male` or `female`, the dropdown options for hair style, hair colour, hair length, face shape, nose, mouth, body type, facial feature, facial hair, makeup, clothing, shoulders, chest, bust size, and bust shape automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
 
 ### Per-Category Controls
 
-Every attribute category (nationality, complexion, skin texture, eyes, eye shape, eyebrows, face shape, nose shape, mouth shape, facial feature, hair colour, hair style, hair length, facial hair, body type, shoulders, chest, bust size, bust shape, expression, accessories, makeup) has three controls:
+Every attribute category (nationality, complexion, skin texture, eyes, eye shape, eyebrows, face shape, nose shape, mouth shape, facial feature, hair colour, hair style, hair length, facial hair, body type, shoulders, chest, bust size, bust shape, expression, accessories, makeup, clothing) has three controls:
 
 | Control | What it does |
 |---|---|
@@ -110,7 +111,7 @@ Every attribute category (nationality, complexion, skin texture, eyes, eye shape
 
 Core identity categories (nationality, complexion, eyes, eye shape, face shape, nose shape, mouth shape, hair colour/style/length, body type, plus age and sex) default to `random`. The optional "flair" categories default to `off` so the base person stays clean and realistic, and you opt them in per category:
 
-`skin_texture`, `eyebrows`, `face_feature`, `facial_hair`, `expression`, `accessories`, `makeup`, `shoulders`, `chest`, `bust_size`, `bust_shape`
+`skin_texture`, `eyebrows`, `face_feature`, `facial_hair`, `expression`, `accessories`, `makeup`, `shoulders`, `chest`, `bust_size`, `bust_shape`, `clothing`
 
 The example outputs above have several of these enabled to show the full range.
 
@@ -143,7 +144,7 @@ A free-text area at the bottom of the node. Enter any custom descriptors separat
 wearing glasses, tattoo on left arm, silver hoop earrings
 ```
 
-This is the right place for clothing, accessories, expressions, or any detail not covered by the built-in categories.
+This is the right place for accessories, expressions, poses, or any detail not covered by the built-in categories.
 
 ---
 
@@ -258,6 +259,14 @@ none, glasses, thin framed glasses, round glasses, thick framed glasses, reading
 none, natural makeup, soft makeup, minimal makeup, bold makeup, glam makeup, smokey eye, winged eyeliner, red lipstick, bold lipstick
 
 > Males have only `none`. `none` outputs nothing.
+
+### Clothing
+
+**Male (22):** plain t-shirt, fitted t-shirt, button-up shirt, flannel shirt, polo shirt, henley shirt, work shirt, tank top, hoodie, crew-neck sweater, turtleneck, denim jacket, leather jacket, bomber jacket, puffer jacket, parka, trench coat, wool overcoat, blazer, tailored suit, three-piece suit, tracksuit
+
+**Female (24):** plain t-shirt, fitted t-shirt, button-up shirt, blouse, tank top, camisole, off-shoulder top, peplum top, knit sweater, cardigan, hoodie, turtleneck, denim jacket, leather jacket, puffer jacket, trench coat, wool coat, blazer, tailored suit, jumpsuit, sundress, wrap dress, maxi dress, cocktail dress
+
+> Sex-gated. Defaults to `off`.
 
 ---
 
