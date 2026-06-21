@@ -314,7 +314,8 @@ data/
 │   ├── chest.json
 │   ├── bust_size.json
 │   ├── bust_shape.json
-│   └── makeup.json
+│   ├── makeup.json
+│   └── clothing.json
 └── female/
     └── (same files as male/)
 ```
