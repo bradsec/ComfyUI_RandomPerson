@@ -436,12 +436,28 @@ def generate_person(seed, randomize, sex, category_args,
             dd("shoulders"), dd("chest"), out_bust, seed)
 
 
-def _collect_category_args(kwargs):
-    """Pull the (mode, allow_list, fixed) triple for each category from kwargs."""
-    return {
-        key: (kwargs[f"{key}_mode"], kwargs[f"{key}_allow_list"], kwargs[f"{key}_fixed"])
-        for key, _, _ in CATEGORY_SPECS
-    }
+def _collect_category_args(kwargs, keys=None):
+    """Pull the (mode, allow_list, fixed) triple for each category from kwargs.
+
+    When `keys` is given, only those categories are read from kwargs; every
+    other category is forced "off". This lets a segment node expose a subset of
+    widgets while the shared core still receives a full category map.
+    """
+    active = set(keys) if keys is not None else None
+    out = {}
+    for key, _, _ in CATEGORY_SPECS:
+        if (active is None or key in active) and f"{key}_mode" in kwargs:
+            out[key] = (kwargs[f"{key}_mode"],
+                        kwargs[f"{key}_allow_list"],
+                        kwargs[f"{key}_fixed"])
+        else:
+            out[key] = ("off", "", "(none)")
+    return out
+
+
+def person_dict(result):
+    """Map a generate_person result tuple to {return_name: value}."""
+    return dict(zip(RETURN_NAMES, result))
 
 
 # -- V1 node (legacy dict API) -------------------------------------------------

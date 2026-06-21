@@ -169,6 +169,25 @@ class TestBuildDescription(unittest.TestCase):
         self.assertIn("year old female", s)
 
 
+class TestNodeHelpers(unittest.TestCase):
+
+    def test_collect_args_restricts_keys(self):
+        kwargs = {}
+        for key, _, _ in core.CATEGORY_SPECS:
+            kwargs[f"{key}_mode"] = "random"
+            kwargs[f"{key}_allow_list"] = ""
+            kwargs[f"{key}_fixed"] = "(none)"
+        args = core._collect_category_args(kwargs, keys=["eyes"])
+        self.assertEqual(args["eyes"][0], "random")
+        self.assertEqual(args["hair_color"], ("off", "", "(none)"))
+
+    def test_person_dict_maps_names(self):
+        result = run(seed=5, sex="female")
+        dmap = core.person_dict(result)
+        self.assertEqual(set(dmap.keys()), set(core.RETURN_NAMES))
+        self.assertEqual(dmap["seed"], result[-1])
+
+
 class TestBodyData(unittest.TestCase):
 
     BODY_KEYS = ("shoulders", "chest", "bust_size", "bust_shape")
