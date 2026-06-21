@@ -499,17 +499,36 @@ NODE_SPECS = [
 
 _NODE_DESCRIPTION = "Generate a randomised, structured physical person description for image prompts."
 
+# Per-node display name for the first ("description") output pin. The internal
+# lookup key stays "description"; only the shown pin label changes, so it is
+# clear which node a full description came from.
+_FIRST_PIN_LABEL = {
+    "RandomPersonNode":     "full_description",
+    "RandomPersonIdentity": "full_identity_description",
+    "RandomPersonFace":     "full_face_description",
+    "RandomPersonHair":     "full_hair_description",
+    "RandomPersonBody":     "full_body_description",
+    "RandomPersonStyle":    "full_style_description",
+}
+
+
+def _display_names(node_id, output_names):
+    """Output names as shown in the UI: first pin relabelled per node, rest unchanged."""
+    first = _FIRST_PIN_LABEL.get(node_id, output_names[0])
+    return (first,) + tuple(output_names[1:])
+
 
 def make_v1_node(node_id, display_name, keys, include_age, output_names):
     """Build a ComfyUI V1 node class exposing only `keys` and returning `output_names`."""
     key_set = set(keys)
+    display = _display_names(node_id, output_names)
 
     class _RandomPersonV1:
         CATEGORY    = "Random Person"
         FUNCTION    = "generate"
         OUTPUT_NODE = False
         DESCRIPTION = _NODE_DESCRIPTION
-        RETURN_NAMES = output_names
+        RETURN_NAMES = display
         RETURN_TYPES = tuple("INT" if n == "seed" else "STRING" for n in output_names)
 
         @classmethod
@@ -575,6 +594,7 @@ try:
 
     def _make_v3_node(node_id, display_name, keys, include_age, output_names):
         key_set = set(keys)
+        display_pins = _display_names(node_id, output_names)
 
         class _RandomPersonV3(io.ComfyNode):
             @classmethod
@@ -604,7 +624,7 @@ try:
                     io.String.Input("extra_attributes", default="", multiline=True,
                                     placeholder="Add any extra details to pass into the description, e.g. wearing a red scarf, holding a coffee, tattoo on left arm", tooltip=_EXTRA_TIP))
                 outputs = []
-                for name in output_names:
+                for name in display_pins:
                     if name == "seed":
                         outputs.append(io.Int.Output(id="seed", display_name="seed", tooltip=_SEED_TIP))
                     else:

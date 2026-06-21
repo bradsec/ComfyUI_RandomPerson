@@ -17,7 +17,9 @@ The nodes appear in the **Add Node** menu under **Random Person**:
 - **Random Person: Body** - build, shoulders, chest, bust size and shape.
 - **Random Person: Style** - accessories, makeup, clothing, and footwear.
 
-The segment nodes are independent generators: each has its own seed and sex and emits its group's fragment. Concatenate the `description` outputs with any string node to assemble a full prompt.
+The AIO node exposes every category at once, so it is a very tall node. You do not have to use it: if you only need part of a person, or want a shorter, tidier graph, use the relevant segment node on its own. The segment nodes are independent generators - each has its own seed and sex and emits only its group's fragment. Use one alone, or wire several together (set the same `sex` on each) and concatenate their full description outputs with any string node to assemble a complete prompt.
+
+Each node's first output pin is its full description, named per node so it is clear where it came from: `full_description` (AIO), `full_identity_description`, `full_face_description`, `full_hair_description`, `full_body_description`, `full_style_description`.
 
 **Example output (male):**
 ```
@@ -49,7 +51,7 @@ The nodes appear in the **Add Node** menu under **Random Person**.
 
 | Pin | Contents | Example |
 |---|---|---|
-| `description` | Full comma-separated description string | `43 year old Russian female, angular face, ...` |
+| `full_description` | Full comma-separated description string (the AIO node's first pin; segment nodes name theirs `full_<group>_description`) | `43 year old Russian female, angular face, ...` |
 | `sex` | Resolved sex | `female` |
 | `age` | Age as a plain number | `43` |
 | `nationality` | Nationality descriptor | `Russian` |

@@ -290,6 +290,22 @@ class TestSegmentNodes(unittest.TestCase):
         for cls in core.NODE_CLASS_MAPPINGS.values():
             self.assertEqual(cls.CATEGORY, "Random Person")
 
+    def test_first_pin_relabelled_per_node(self):
+        # Display label of the first pin is node-specific; internal value key stays "description".
+        expect = {
+            "RandomPersonNode":     "full_description",
+            "RandomPersonIdentity": "full_identity_description",
+            "RandomPersonFace":     "full_face_description",
+            "RandomPersonHair":     "full_hair_description",
+            "RandomPersonBody":     "full_body_description",
+            "RandomPersonStyle":    "full_style_description",
+        }
+        for node_id, label in expect.items():
+            self.assertEqual(core.NODE_CLASS_MAPPINGS[node_id].RETURN_NAMES[0], label, node_id)
+        # Module RETURN_NAMES (the value-lookup keys) is unchanged, so the first
+        # pin still resolves to the description value.
+        self.assertEqual(core.RETURN_NAMES[0], "description")
+
     def test_identity_exposes_only_its_widgets(self):
         req = self._node("RandomPersonIdentity").INPUT_TYPES()["required"]
         self.assertIn("nationality_mode", req)
@@ -314,8 +330,7 @@ class TestSegmentNodes(unittest.TestCase):
             elif name.endswith("_fixed"):
                 kwargs[name] = "(none)"
         out = cls().generate(seed=3, randomize=False, sex="female", **kwargs)
-        names = cls.RETURN_NAMES
-        desc = out[names.index("description")]
+        desc = out[0]                          # first pin is always the full description
         self.assertNotIn("build", desc)        # body excluded
         self.assertNotIn("hair", desc)         # hair excluded
         self.assertNotIn("year old", desc)     # age excluded
