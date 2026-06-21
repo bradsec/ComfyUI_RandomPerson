@@ -1,6 +1,6 @@
 # Random Person Description - Custom node for ComfyUI
 
-Generates a randomised, structured physical description of a person for use in image generation prompts. Every attribute is drawn from curated JSON data files tuned for realistic, unambiguous output with SDXL and Flux models.
+Generates a randomised, structured physical description of a person for use in image generation prompts. Every attribute is drawn from curated JSON data files tuned for realistic, unambiguous output image generation models.
 
 ![node](samples/node.png)
 
