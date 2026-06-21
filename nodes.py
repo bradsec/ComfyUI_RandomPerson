@@ -163,7 +163,7 @@ _FIXED_TIP  = "Exact value used when mode=fixed. (none) falls back to random."
 _AGEMIN_TIP = "Minimum age. 0 = no lower bound (defaults to 21). Cannot go below 21."
 _AGEMAX_TIP = "Maximum age. 0 = no upper bound (defaults to 90). Minimum is always 21."
 _AGEFIX_TIP = "Exact age when mode=fixed. 0 = ignored. Values below 21 are clamped to 21."
-_EXTRA_TIP  = "Free text appended to the description as-is, comma-separated. Clothing, accessories, expression, etc."
+_EXTRA_TIP  = "Free text appended to the description as-is, comma-separated. Pose, setting, props, extra detail, etc."
 
 RETURN_NAMES = ("description", "sex", "age", "nationality", "complexion",
                 "face", "hair", "facial_hair", "body_type",
