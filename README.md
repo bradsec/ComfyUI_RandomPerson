@@ -83,7 +83,7 @@ Wire `description` directly into a text prompt node, or use individual pins to r
 
 Dropdown: `random` / `male` / `female`
 
-When set to `male` or `female`, the dropdown options for hair style, hair colour, face shape, nose, mouth, body type, facial feature, facial hair, makeup, shoulders, chest, bust size, and bust shape automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
+When set to `male` or `female`, the dropdown options for hair style, hair colour, hair length, face shape, nose, mouth, body type, facial feature, facial hair, makeup, shoulders, chest, bust size, and bust shape automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
 
 ### Per-Category Controls
 
@@ -150,7 +150,7 @@ This is the right place for clothing, accessories, expressions, or any detail no
 ## Available Values
 
 ### Nationality (65)
-American, Algerian, Argentinian, Australian, Bangladeshi, Brazilian, British, Canadian, Chilean, Chinese, Colombian, Congolese, Cuban, Dutch, Egyptian, Emirati, Ethiopian, Filipino, Finnish, French, German, Ghanaian, Greek, Indian, Indonesian, Iranian, Iraqi, Irish, Israeli, Italian, Jamaican, Japanese, Kenyan, Korean, Lebanese, Malaysian, Maori, Mexican, Mongolian, Moroccan, Nepalese, Nigerian, Norwegian, Pakistani, Peruvian, Polish, Portuguese, Russian, Samoan, Saudi, Somali, South African, Spanish, Sri Lankan, Sudanese, Swedish, Tanzanian, Thai, Turkish, Ugandan, Ukrainian, Venezuelan, Vietnamese
+Afghan, Algerian, American, Argentinian, Australian, Bangladeshi, Brazilian, British, Cambodian, Canadian, Chilean, Chinese, Colombian, Congolese, Cuban, Dutch, Egyptian, Emirati, Ethiopian, Filipino, Finnish, French, German, Ghanaian, Greek, Indian, Indonesian, Iranian, Iraqi, Irish, Israeli, Italian, Jamaican, Japanese, Kenyan, Korean, Lebanese, Malaysian, Maori, Mexican, Mongolian, Moroccan, Nepali, Nigerian, Norwegian, Pakistani, Peruvian, Polish, Portuguese, Russian, Samoan, Saudi, Somali, South African, Spanish, Sri Lankan, Sudanese, Swedish, Tanzanian, Thai, Turkish, Ugandan, Ukrainian, Venezuelan, Vietnamese
 
 ### Complexion (15)
 porcelain, fair, light, light medium, warm beige, warm olive, olive, medium, warm medium, tan, golden brown, medium brown, deep brown, deep, ebony
@@ -286,6 +286,8 @@ data/
 │   ├── complexion.json
 │   ├── skin_texture.json
 │   ├── eyes.json
+│   ├── eye_shape.json
+│   ├── eyebrows.json
 │   ├── expression.json
 │   ├── accessories.json
 │   └── age.json
@@ -299,6 +301,10 @@ data/
 │   ├── mouth_shape.json
 │   ├── face_feature.json
 │   ├── body_type.json
+│   ├── shoulders.json
+│   ├── chest.json
+│   ├── bust_size.json
+│   ├── bust_shape.json
 │   └── makeup.json
 └── female/
     └── (same files as male/)
