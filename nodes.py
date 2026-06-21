@@ -278,6 +278,15 @@ def nat_text(item):
     return str(item)
 
 
+def _bust_phrase(size_str, shape_str):
+    """Combine bust size and shape into one descriptor, or '' if neither."""
+    if size_str and shape_str:
+        return f"a {size_str}, {shape_str} bust"
+    if size_str or shape_str:
+        return f"a {size_str or shape_str} bust"
+    return ""
+
+
 # -- Description builder -------------------------------------------------------
 
 def build_description(sex, nat, age, skin_texture,
@@ -338,12 +347,10 @@ def build_description(sex, nat, age, skin_texture,
     add(shoulders)
     add(chest)
 
-    size_str  = d(bust_size).strip()  if bust_size  else ""
-    shape_str = d(bust_shape).strip() if bust_shape else ""
-    if size_str and shape_str:
-        parts.append(f"a {size_str}, {shape_str} bust")
-    elif size_str or shape_str:
-        parts.append(f"a {size_str or shape_str} bust")
+    bust = _bust_phrase(d(bust_size).strip() if bust_size else "",
+                        d(bust_shape).strip() if bust_shape else "")
+    if bust:
+        parts.append(bust)
 
     add(expression)
     add(accessories)
@@ -418,14 +425,7 @@ def generate_person(seed, randomize, sex, category_args,
         dd("face_feature"),
     ]))
 
-    size_str  = dd("bust_size")
-    shape_str = dd("bust_shape")
-    if size_str and shape_str:
-        out_bust = f"a {size_str}, {shape_str} bust"
-    elif size_str or shape_str:
-        out_bust = f"a {size_str or shape_str} bust"
-    else:
-        out_bust = ""
+    out_bust = _bust_phrase(dd("bust_size"), dd("bust_shape"))
 
     return (description, resolved_sex, out_age, out_nat, out_comp,
             out_face, out_hair, dd("facial_hair"), dd("body_type"),
