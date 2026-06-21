@@ -385,5 +385,40 @@ class TestClothing(unittest.TestCase):
         self.assertIn("clothing", core.NODE_CLASS_MAPPINGS["RandomPersonStyle"].RETURN_NAMES)
 
 
+class TestFootwear(unittest.TestCase):
+
+    def test_footwear_defaults_off(self):
+        req = core.RandomPersonNode.INPUT_TYPES()["required"]
+        self.assertEqual(req["footwear_mode"][1]["default"], "off")
+
+    def test_footwear_is_sex_gated(self):
+        self.assertIn("footwear", core.SEX_GATED)
+
+    def test_footwear_pin_carries_value(self):
+        out = run(sex="female", clothing=("fixed", "", "leather jacket"),
+                  footwear=("fixed", "", "high heels"))
+        idx = core.RETURN_NAMES.index("footwear")
+        self.assertEqual(out[idx], "high heels")
+        self.assertIn("high heels", out[0])
+
+    def test_male_never_gets_female_only_shoe(self):
+        female_only_shoes = {
+            "high heels", "stilettos", "kitten heels", "platform heels",
+            "strappy heels", "wedges", "ballet flats", "mary janes", "knee-high boots",
+        }
+        for seed in range(30):
+            out = run(seed=seed, sex="male", footwear=("random", "", "(none)"))
+            idx = core.RETURN_NAMES.index("footwear")
+            val = out[idx]
+            if val:
+                self.assertNotIn(val, female_only_shoes,
+                                 f"seed={seed}: male got female-only shoe '{val}'")
+
+    def test_style_node_exposes_footwear(self):
+        req = core.NODE_CLASS_MAPPINGS["RandomPersonStyle"].INPUT_TYPES()["required"]
+        self.assertIn("footwear_mode", req)
+        self.assertIn("footwear", core.NODE_CLASS_MAPPINGS["RandomPersonStyle"].RETURN_NAMES)
+
+
 if __name__ == "__main__":
     unittest.main()

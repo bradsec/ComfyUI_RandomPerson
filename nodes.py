@@ -92,6 +92,8 @@ _MAKEUP_LABELS       = ["(none)"] + _union(_labels(load_sex("male", "makeup.json
                                            _labels(load_sex("female", "makeup.json")))
 _CLOTHING_LABELS    = ["(none)"] + _union(_labels(load_sex("male", "clothing.json")),
                                           _labels(load_sex("female", "clothing.json")))
+_FOOTWEAR_LABELS    = ["(none)"] + _union(_labels(load_sex("male", "footwear.json")),
+                                          _labels(load_sex("female", "footwear.json")))
 _SHOULDERS_LABELS   = ["(none)"] + _union(_labels(load_sex("male", "shoulders.json")),
                                           _labels(load_sex("female", "shoulders.json")))
 _CHEST_LABELS       = ["(none)"] + _union(_labels(load_sex("male", "chest.json")),
@@ -134,12 +136,13 @@ CATEGORY_SPECS = [
     ("accessories",  _ACCESSORIES_LABELS,  "e.g. glasses, hoop earrings, nose ring"),
     ("makeup",       _MAKEUP_LABELS,       "e.g. natural makeup, bold lipstick, smokey eye"),
     ("clothing",     _CLOTHING_LABELS,     "e.g. t-shirt, leather jacket, blazer"),
+    ("footwear",     _FOOTWEAR_LABELS,     "e.g. sneakers, boots, sandals, heels"),
 ]
 
 # Categories whose data lives under data/<sex>/ rather than data/shared/.
 SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape",
              "nose_shape", "mouth_shape", "face_feature", "facial_hair", "makeup",
-             "shoulders", "chest", "bust_size", "bust_shape", "clothing"}
+             "shoulders", "chest", "bust_size", "bust_shape", "clothing", "footwear"}
 
 # Optional "flair" categories default to mode "off" so the base description stays
 # clean and realistic; the user opts them in per category. Core identity
@@ -147,7 +150,7 @@ SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape
 # default to "random".
 DEFAULT_OFF = {"skin_texture", "eyebrows", "face_feature", "facial_hair",
                "expression", "accessories", "makeup",
-               "shoulders", "chest", "bust_size", "bust_shape", "clothing"}
+               "shoulders", "chest", "bust_size", "bust_shape", "clothing", "footwear"}
 
 
 def _mode_default(key):
@@ -168,7 +171,7 @@ _EXTRA_TIP  = "Free text appended to the description as-is, comma-separated. Pos
 RETURN_NAMES = ("description", "sex", "age", "nationality", "complexion",
                 "face", "hair", "facial_hair", "body_type",
                 "expression", "accessories", "makeup",
-                "shoulders", "chest", "bust", "clothing", "seed")
+                "shoulders", "chest", "bust", "clothing", "footwear", "seed")
 
 
 # -- Selection logic -----------------------------------------------------------
@@ -300,7 +303,7 @@ def build_description(sex, nat, age, skin_texture,
                       body, expression, accessories, makeup, extra_attributes="",
                       eye_shape=None, eyebrows=None,
                       shoulders=None, chest=None, bust_size=None, bust_shape=None,
-                      clothing=None):
+                      clothing=None, footwear=None):
     """Produce a single comma-separated descriptor string."""
     parts = []
 
@@ -365,6 +368,7 @@ def build_description(sex, nat, age, skin_texture,
     add(accessories)
     add(makeup)
     add(clothing)
+    add(footwear)
 
     if extra_attributes and extra_attributes.strip():
         for attr in extra_attributes.split(","):
@@ -408,7 +412,7 @@ def generate_person(seed, randomize, sex, category_args,
         extra_attributes, eye_shape=p["eye_shape"], eyebrows=p["eyebrows"],
         shoulders=p["shoulders"], chest=p["chest"],
         bust_size=p["bust_size"], bust_shape=p["bust_shape"],
-        clothing=p["clothing"])
+        clothing=p["clothing"], footwear=p["footwear"])
 
     def dd(key, sub_key="description"):
         item = p[key]
@@ -441,7 +445,7 @@ def generate_person(seed, randomize, sex, category_args,
     return (description, resolved_sex, out_age, out_nat, out_comp,
             out_face, out_hair, dd("facial_hair"), dd("body_type"),
             dd("expression"), dd("accessories"), dd("makeup"),
-            dd("shoulders"), dd("chest"), out_bust, dd("clothing"), seed)
+            dd("shoulders"), dd("chest"), out_bust, dd("clothing"), dd("footwear"), seed)
 
 
 def _collect_category_args(kwargs, keys=None):
@@ -489,8 +493,8 @@ NODE_SPECS = [
      ["body_type", "shoulders", "chest", "bust_size", "bust_shape"], False,
      ("description", "sex", "body_type", "shoulders", "chest", "bust", "seed")),
     ("RandomPersonStyle", "Random Person: Style",
-     ["clothing", "accessories", "makeup"], False,
-     ("description", "sex", "clothing", "accessories", "makeup", "seed")),
+     ["clothing", "accessories", "makeup", "footwear"], False,
+     ("description", "sex", "clothing", "accessories", "makeup", "footwear", "seed")),
 ]
 
 _NODE_DESCRIPTION = "Generate a randomised, structured physical person description for image prompts."
