@@ -21,19 +21,6 @@ aquiline nose, wide-set lips, a scar through one eyebrow, ash grey shaved hair w
 43 year old Russian female, angular face, light medium complexion, smooth skin, natural grey eyes, button nose, wide-set lips, a faint scar through one eyebrow, red very short hair worn twist out, muscular build, reading glasses, bold lipstick
 ```
 
----
-
-### Samples
-
-![grid_001](samples/grid_001.jpg)
-![grid_002](samples/grid_002.jpg)
-![grid_003](samples/grid_003.jpg)
-![grid_004](samples/grid_004.jpg)
-![grid_005](samples/grid_005.jpg)
-![grid_006](samples/grid_006.jpg)
-![grid_007](samples/grid_007.jpg)
-
-
 ## Installation
 
 ### ComfyUI Manager (recommended)
