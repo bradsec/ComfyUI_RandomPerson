@@ -83,11 +83,11 @@ Wire `description` directly into a text prompt node, or use individual pins to r
 
 Dropdown: `random` / `male` / `female`
 
-When set to `male` or `female`, the dropdown options for hair style, hair colour, face shape, nose, mouth, body type, facial feature, facial hair, and makeup automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
+When set to `male` or `female`, the dropdown options for hair style, hair colour, face shape, nose, mouth, body type, facial feature, facial hair, makeup, shoulders, chest, bust size, and bust shape automatically filter to show only sex-appropriate options. Facial hair and makeup are effectively sex-specific: females never grow facial hair and males have no makeup options.
 
 ### Per-Category Controls
 
-Every attribute category (nationality, complexion, skin texture, eyes, face shape, nose shape, mouth shape, facial feature, hair colour, hair style, hair length, facial hair, body type, expression, accessories, makeup) has three controls:
+Every attribute category (nationality, complexion, skin texture, eyes, eye shape, eyebrows, face shape, nose shape, mouth shape, facial feature, hair colour, hair style, hair length, facial hair, body type, shoulders, chest, bust size, bust shape, expression, accessories, makeup) has three controls:
 
 | Control | What it does |
 |---|---|
@@ -108,9 +108,9 @@ Every attribute category (nationality, complexion, skin texture, eyes, face shap
 
 #### Default modes
 
-Core identity categories (nationality, complexion, eyes, face shape, nose shape, mouth shape, hair colour/style/length, body type, plus age and sex) default to `random`. The optional "flair" categories default to `off` so the base person stays clean and realistic, and you opt them in per category:
+Core identity categories (nationality, complexion, eyes, eye shape, face shape, nose shape, mouth shape, hair colour/style/length, body type, plus age and sex) default to `random`. The optional "flair" categories default to `off` so the base person stays clean and realistic, and you opt them in per category:
 
-`skin_texture`, `face_feature`, `facial_hair`, `expression`, `accessories`, `makeup`
+`skin_texture`, `eyebrows`, `face_feature`, `facial_hair`, `expression`, `accessories`, `makeup`, `shoulders`, `chest`, `bust_size`, `bust_shape`
 
 The example outputs above have several of these enabled to show the full range.
 
@@ -149,14 +149,14 @@ This is the right place for clothing, accessories, expressions, or any detail no
 
 ## Available Values
 
-### Nationality (40)
-American, Algerian, Argentinian, Australian, Bangladeshi, Brazilian, British, Canadian, Chinese, Colombian, Dutch, Egyptian, Ethiopian, Filipino, French, German, Ghanaian, Greek, Indian, Iranian, Italian, Jamaican, Japanese, Kenyan, Korean, Mexican, Moroccan, Nigerian, Pakistani, Peruvian, Polish, Russian, South African, Spanish, Sudanese, Swedish, Thai, Turkish, Ugandan, Vietnamese
+### Nationality (65)
+American, Algerian, Argentinian, Australian, Bangladeshi, Brazilian, British, Canadian, Chilean, Chinese, Colombian, Congolese, Cuban, Dutch, Egyptian, Emirati, Ethiopian, Filipino, Finnish, French, German, Ghanaian, Greek, Indian, Indonesian, Iranian, Iraqi, Irish, Israeli, Italian, Jamaican, Japanese, Kenyan, Korean, Lebanese, Malaysian, Maori, Mexican, Mongolian, Moroccan, Nepalese, Nigerian, Norwegian, Pakistani, Peruvian, Polish, Portuguese, Russian, Samoan, Saudi, Somali, South African, Spanish, Sri Lankan, Sudanese, Swedish, Tanzanian, Thai, Turkish, Ugandan, Ukrainian, Venezuelan, Vietnamese
 
 ### Complexion (15)
 porcelain, fair, light, light medium, warm beige, warm olive, olive, medium, warm medium, tan, golden brown, medium brown, deep brown, deep, ebony
 
-### Skin Texture (10)
-smooth, clear, dewy, glowing, freckled, fine lines, wrinkled, sun-spotted, acne scars, ruddy
+### Skin Texture (20)
+smooth, clear, dewy, glowing, matte, oily, large pores, freckled, beauty spots, moles, blemished, acne scars, rosacea, vitiligo, ruddy, fine lines, wrinkled, sun-spotted, weathered, leathery
 
 > Skin texture is separate from complexion (tone). It appends after the complexion in both the `description` and the `complexion` pin, e.g. `tan, smooth skin`.
 
@@ -164,6 +164,16 @@ smooth, clear, dewy, glowing, freckled, fine lines, wrinkled, sun-spotted, acne 
 brown, dark brown, light brown, near black, hazel, hazel green, hazel brown, amber, blue, light blue, dark blue, ice blue, grey blue, steel blue, green, light green, dark green, olive green, blue green, grey, pale grey, dark grey, grey green
 
 > Eye colour descriptions are deliberately grounded: e.g. `green` outputs as `muted natural green eyes` and `amber` as `warm amber-brown eyes`, to prevent image models rendering oversaturated or unrealistic eye colours.
+
+### Eye Shape (12)
+almond, round, hooded, monolid, deep-set, wide-set, close-set, upturned, downturned, heavy-lidded, narrow, large
+
+> Displayed in front of the eye colour in the `face` pin, e.g. `almond hazel eyes`. Defaults to `random`.
+
+### Eyebrows (12)
+thick, thin, arched, high arched, straight, bushy, full natural, sparse, well-groomed, rounded, angular, feathered
+
+> Defaults to `off`.
 
 ### Hair Colour
 **Male (25):** jet black, black, dark brown, chestnut brown, warm brown, brown, medium brown, light brown, auburn, copper red, red, dark red, warm honey, golden blonde, blonde, dark blonde, light blonde, sandy, ash blonde, salt and pepper, silver, ash grey, dark grey, grey, white
@@ -207,18 +217,40 @@ brown, dark brown, light brown, near black, hazel, hazel green, hazel brown, amb
 
 **Female (19):** slim, lean, wiry, petite, slight, average, medium build, athletic, muscular, tall lean, tall athletic, lanky, pear, hourglass, curvy, full figured, softly built, heavyset, stocky
 
+### Shoulders
+**Male (6):** narrow, average, broad, sloping, square, muscular
+
+**Female (6):** narrow, average, broad, sloping, square, soft
+
+> Defaults to `off`.
+
+### Chest (male)
+flat, average, broad, muscular, barrel
+
+> Sex-gated: males only. Females have a stub entry so the dropdown is populated but a random female never produces chest text. Defaults to `off`.
+
+### Bust Size (female)
+petite, small, average, full, large
+
+> Sex-gated: females only. Males have a stub entry so a random male never produces bust text. Defaults to `off`.
+
+### Bust Shape (female)
+round, teardrop, wide-set, close-set, natural
+
+> Sex-gated: females only. Combined with bust size in the `bust` output pin, e.g. `a full, round bust`. Defaults to `off`.
+
 ### Facial Hair (male)
 clean shaven, light stubble, heavy stubble, short beard, full beard, goatee, moustache, circle beard, van dyke, mutton chops, soul patch
 
 > Females have only `clean shaven`, so a random female never grows facial hair. `clean shaven` outputs nothing.
 
-### Expression (11)
-neutral, soft smile, warm smile, slight smile, serious, stern, pensive, confident, relaxed, intense gaze, laughing
+### Expression (25)
+neutral, soft smile, warm smile, slight smile, gentle smile, serious, stern, pensive, contemplative, confident, relaxed, intense gaze, focused, smirk, raised eyebrow, playful, mischievous, surprised, slight frown, downcast, wistful, weary, brooding, laughing, joyful
 
 > `neutral` outputs nothing, so many people carry no expression text.
 
-### Accessories / Eyewear (12)
-none, glasses, thin framed glasses, round glasses, thick framed glasses, reading glasses, sunglasses, stud earrings, hoop earrings, nose ring, nose stud, small ear piercings
+### Accessories / Eyewear (25)
+none, glasses, thin framed glasses, round glasses, thick framed glasses, reading glasses, sunglasses, aviator sunglasses, stud earrings, hoop earrings, drop earrings, ear cuff, multiple ear piercings, small ear piercings, nose ring, nose stud, septum ring, eyebrow piercing, labret piercing, pendant necklace, choker, headscarf, beanie, cap, bindi
 
 > `none` outputs nothing.
 

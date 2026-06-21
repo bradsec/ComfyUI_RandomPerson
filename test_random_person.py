@@ -264,6 +264,16 @@ class TestBodyData(unittest.TestCase):
             chest_idx = core.RETURN_NAMES.index("chest")
             self.assertEqual(out[chest_idx], "", seed)
 
+    def test_bust_average_uses_an(self):
+        out = run(sex="female", bust_size=("fixed", "", "average"),
+                  bust_shape=("off", "", "(none)"))
+        self.assertIn("an average bust", out[0])
+
+    def test_bust_full_uses_a(self):
+        out = run(sex="female", bust_size=("fixed", "", "full"),
+                  bust_shape=("off", "", "(none)"))
+        self.assertIn("a full bust", out[0])
+
 
 class TestSegmentNodes(unittest.TestCase):
 

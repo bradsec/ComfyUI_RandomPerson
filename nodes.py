@@ -280,11 +280,13 @@ def nat_text(item):
 
 def _bust_phrase(size_str, shape_str):
     """Combine bust size and shape into one descriptor, or '' if neither."""
+    lead = size_str or shape_str
+    if not lead:
+        return ""
+    article = "an" if lead[:1].lower() in "aeiou" else "a"
     if size_str and shape_str:
-        return f"a {size_str}, {shape_str} bust"
-    if size_str or shape_str:
-        return f"a {size_str or shape_str} bust"
-    return ""
+        return f"{article} {size_str}, {shape_str} bust"
+    return f"{article} {lead} bust"
 
 
 # -- Description builder -------------------------------------------------------
