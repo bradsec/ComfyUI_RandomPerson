@@ -474,7 +474,7 @@ _ALL_KEYS = [k for k, _, _ in CATEGORY_SPECS]
 
 # (node_id, display_name, category keys, include_age, output pin names)
 NODE_SPECS = [
-    ("RandomPersonNode", "Random Person Description", _ALL_KEYS, True, RETURN_NAMES),
+    ("RandomPersonNode", "Random Person AIO (All-In-One)", _ALL_KEYS, True, RETURN_NAMES),
     ("RandomPersonIdentity", "Random Person: Identity",
      ["nationality", "complexion", "skin_texture"], True,
      ("description", "sex", "age", "nationality", "complexion", "seed")),
