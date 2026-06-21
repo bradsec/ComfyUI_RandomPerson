@@ -262,9 +262,9 @@ none, natural makeup, soft makeup, minimal makeup, bold makeup, glam makeup, smo
 
 ### Clothing
 
-**Male (22):** plain t-shirt, fitted t-shirt, button-up shirt, flannel shirt, polo shirt, henley shirt, work shirt, tank top, hoodie, crew-neck sweater, turtleneck, denim jacket, leather jacket, bomber jacket, puffer jacket, parka, trench coat, wool overcoat, blazer, tailored suit, three-piece suit, tracksuit
+**Male (32):** plain t-shirt, fitted t-shirt, button-up shirt, flannel shirt, polo shirt, henley shirt, work shirt, tank top, hoodie, crew-neck sweater, turtleneck, denim jacket, leather jacket, bomber jacket, puffer jacket, parka, trench coat, wool overcoat, blazer, tailored suit, three-piece suit, tracksuit, gym wear, sportswear, streetwear, casual wear, smart casual, business wear, business casual, formal wear, loungewear, beachwear
 
-**Female (24):** plain t-shirt, fitted t-shirt, button-up shirt, blouse, tank top, camisole, off-shoulder top, peplum top, knit sweater, cardigan, hoodie, turtleneck, denim jacket, leather jacket, puffer jacket, trench coat, wool coat, blazer, tailored suit, jumpsuit, sundress, wrap dress, maxi dress, cocktail dress
+**Female (34):** plain t-shirt, fitted t-shirt, button-up shirt, blouse, tank top, camisole, off-shoulder top, peplum top, knit sweater, cardigan, hoodie, turtleneck, denim jacket, leather jacket, puffer jacket, trench coat, wool coat, blazer, tailored suit, jumpsuit, sundress, wrap dress, maxi dress, cocktail dress, gym wear, sportswear, streetwear, casual wear, smart casual, business wear, business casual, formal wear, loungewear, beachwear
 
 > Sex-gated. Defaults to `off`.
 
