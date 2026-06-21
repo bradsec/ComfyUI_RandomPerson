@@ -83,10 +83,10 @@ class TestSelection(unittest.TestCase):
             self.assertEqual(run(seed=seed, sex="male")[11], "")   # makeup pin empty
 
     def test_skin_texture_in_complexion_pin(self):
-        out = run(skin_texture=("fixed", "", "freckled"),
+        out = run(skin_texture=("fixed", "", "dewy"),
                   complexion=("fixed", "", "tan"))
         self.assertIn("tan", out[4])
-        self.assertIn("freckled", out[4])
+        self.assertIn("dewy", out[4])
 
     def test_eye_shape_merges_into_eyes(self):
         # eye_shape sits in front of the eye colour, single "eyes" suffix, and

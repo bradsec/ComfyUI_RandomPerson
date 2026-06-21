@@ -156,8 +156,8 @@ Afghan, Algerian, American, Argentinian, Australian, Bangladeshi, Brazilian, Bri
 ### Complexion (15)
 porcelain, fair, light, light medium, warm beige, warm olive, olive, medium, warm medium, tan, golden brown, medium brown, deep brown, deep, ebony
 
-### Skin Texture (20)
-smooth, clear, dewy, glowing, matte, oily, large pores, freckled, beauty spots, moles, blemished, acne scars, rosacea, vitiligo, ruddy, fine lines, wrinkled, sun-spotted, weathered, leathery
+### Skin Texture (19)
+smooth, clear, dewy, glowing, matte, oily, large pores, beauty spots, moles, blemished, acne scars, rosacea, vitiligo, ruddy, fine lines, wrinkled, sun-spotted, weathered, leathery
 
 > Skin texture is separate from complexion (tone). It appends after the complexion in both the `description` and the `complexion` pin, e.g. `tan, smooth skin`.
 
