@@ -6,9 +6,18 @@ Generates a randomised, structured physical description of a person to drop stra
 
 ## Purpose
 
-When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour and shape, eyebrows, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
+When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour and shape, eyebrows, face shape and distinctive features, hair, facial hair, build, shoulders, chest or bust, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
 
-The node will be located under **Add Node > utils**. Node name: **Random Person Description**.
+The nodes appear in the **Add Node** menu under **Random Person**:
+
+- **Random Person Description** - the full node, every attribute on one node.
+- **Random Person: Identity** - sex, age, nationality, complexion, skin texture.
+- **Random Person: Face & Expression** - face shape, eyes, eyebrows, nose, mouth, distinctive features, expression.
+- **Random Person: Hair** - hair colour, style, length, facial hair.
+- **Random Person: Body** - build, shoulders, chest, bust size and shape.
+- **Random Person: Style** - accessories and makeup.
+
+The segment nodes are independent generators: each has its own seed and sex and emits its group's fragment. Concatenate the `description` outputs with any string node to assemble a full prompt.
 
 **Example output (male):**
 ```
@@ -32,7 +41,7 @@ In ComfyUI, open **Manager > Custom Nodes Manager**, search for **ComfyUI_Random
 1. Copy the `ComfyUI_RandomPerson` folder into your `ComfyUI/custom_nodes/` directory
 2. Restart ComfyUI
 
-The node appears in the **Add Node** menu under **utils > Random Person Description**.
+The nodes appear in the **Add Node** menu under **Random Person**.
 
 ---
 
@@ -49,6 +58,9 @@ The node appears in the **Add Node** menu under **utils > Random Person Descript
 | `hair` | Combined hair description | `red very short hair worn twist out` |
 | `facial_hair` | Beard / moustache style (empty for clean shaven) | `a van dyke beard` |
 | `body_type` | Build | `muscular` |
+| `shoulders` | Shoulder descriptor (empty when off) | `broad shoulders` |
+| `chest` | Chest descriptor, male (empty when off / female) | `a muscular chest` |
+| `bust` | Combined bust size and shape, female (empty when off / male) | `a full, round bust` |
 | `expression` | Facial expression (empty for neutral) | `a soft smile` |
 | `accessories` | Eyewear / jewellery (empty for none) | `reading glasses` |
 | `makeup` | Makeup style (empty for none / male) | `bold lipstick` |
