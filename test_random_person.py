@@ -153,6 +153,21 @@ class TestBuildDescription(unittest.TestCase):
         s = core.build_description(*args)
         self.assertNotIn("eyes eyes", s)
 
+    def test_opener_omits_bare_sex(self):
+        # sex present but no age and no nationality -> no leading "female".
+        args = [""] + [None] * 17
+        args[0] = "female"                 # sex positional slot
+        args[4] = {"description": "oval"}  # face_shape slot -> "oval face"
+        s = core.build_description(*args)
+        self.assertTrue(s.startswith("oval face"), s)
+        self.assertNotIn("female", s)
+
+    def test_opener_keeps_sex_with_age(self):
+        # age + sex -> "<n> year old female ..."
+        s = core.build_description(
+            "female", None, {"age": 30}, *( [None] * 15 ))
+        self.assertIn("year old female", s)
+
 
 class TestBodyData(unittest.TestCase):
 

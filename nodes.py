@@ -304,12 +304,15 @@ def build_description(sex, nat, age, skin_texture,
         if s:
             parts.append(fmt.format(s))
 
-    # Opener: "34 year old Brazilian female"
+    # Opener: "34 year old Brazilian female". Sex is shown only alongside an age
+    # or nationality, so a face-only fragment does not start with a bare "female".
     age_str = f"{age['age']} year old" if age else None
     nat_str = nat_text(nat) or None
     sex_str = sex if sex else None
-    opener_parts = [p for p in [age_str, nat_str, sex_str] if p]
+    opener_parts = [p for p in [age_str, nat_str] if p]
     if opener_parts:
+        if sex_str:
+            opener_parts.append(sex_str)
         parts.append(" ".join(opener_parts))
 
     add(face_shape, "{} face")
