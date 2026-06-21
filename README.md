@@ -1,12 +1,12 @@
 # Random Person Description - Custom node for ComfyUI
 
-Generates a randomised, structured physical description of a person for use in image generation prompts. Every attribute is drawn from curated JSON data files tuned for realistic, unambiguous output image generation models.
+Generates a randomised, structured physical description of a person to drop straight into an image generation prompt. Every attribute is drawn from curated JSON data files, chosen to keep the output realistic and unambiguous for diffusion models.
 
 ![node](samples/node.png)
 
 ## Purpose
 
-Diffusion models drift toward a narrow set of "default" faces when a prompt leaves appearance vague, so batches of people start to look the same. This node feeds the model a specific, well-formed human description on every run: nationality, age, complexion and skin texture, eye colour, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Pinning down those traits, and varying them per seed, pushes the model away from its defaults and toward more unique, individual people across a batch. Lock the traits you care about and let the rest randomise to explore variety without losing control.
+When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
 
 The node will be located under **Add Node > utils**. Node name: **Random Person Description**.
 
