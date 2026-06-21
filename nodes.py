@@ -164,7 +164,8 @@ _EXTRA_TIP  = "Free text appended to the description as-is, comma-separated. Clo
 
 RETURN_NAMES = ("description", "sex", "age", "nationality", "complexion",
                 "face", "hair", "facial_hair", "body_type",
-                "expression", "accessories", "makeup", "seed")
+                "expression", "accessories", "makeup",
+                "shoulders", "chest", "bust", "seed")
 
 
 # -- Selection logic -----------------------------------------------------------
@@ -283,7 +284,8 @@ def build_description(sex, nat, age, skin_texture,
                       face_shape, complexion, eyes, nose_shape, mouth_shape, face_feature,
                       hair_color, hair_style, hair_length, facial_hair,
                       body, expression, accessories, makeup, extra_attributes="",
-                      eye_shape=None, eyebrows=None):
+                      eye_shape=None, eyebrows=None,
+                      shoulders=None, chest=None, bust_size=None, bust_shape=None):
     """Produce a single comma-separated descriptor string."""
     parts = []
 
@@ -333,6 +335,16 @@ def build_description(sex, nat, age, skin_texture,
         build_str = d(body)
         parts.append(build_str if build_str.lower().endswith("build") else f"{build_str} build")
 
+    add(shoulders)
+    add(chest)
+
+    size_str  = d(bust_size).strip()  if bust_size  else ""
+    shape_str = d(bust_shape).strip() if bust_shape else ""
+    if size_str and shape_str:
+        parts.append(f"a {size_str}, {shape_str} bust")
+    elif size_str or shape_str:
+        parts.append(f"a {size_str or shape_str} bust")
+
     add(expression)
     add(accessories)
     add(makeup)
@@ -376,7 +388,9 @@ def generate_person(seed, randomize, sex, category_args,
         p["face_shape"], p["complexion"], p["eyes"], p["nose_shape"], p["mouth_shape"], p["face_feature"],
         p["hair_color"], p["hair_style"], p["hair_length"], p["facial_hair"],
         p["body_type"], p["expression"], p["accessories"], p["makeup"],
-        extra_attributes, eye_shape=p["eye_shape"], eyebrows=p["eyebrows"])
+        extra_attributes, eye_shape=p["eye_shape"], eyebrows=p["eyebrows"],
+        shoulders=p["shoulders"], chest=p["chest"],
+        bust_size=p["bust_size"], bust_shape=p["bust_shape"])
 
     def dd(key, sub_key="description"):
         item = p[key]
@@ -404,9 +418,19 @@ def generate_person(seed, randomize, sex, category_args,
         dd("face_feature"),
     ]))
 
+    size_str  = dd("bust_size")
+    shape_str = dd("bust_shape")
+    if size_str and shape_str:
+        out_bust = f"a {size_str}, {shape_str} bust"
+    elif size_str or shape_str:
+        out_bust = f"a {size_str or shape_str} bust"
+    else:
+        out_bust = ""
+
     return (description, resolved_sex, out_age, out_nat, out_comp,
             out_face, out_hair, dd("facial_hair"), dd("body_type"),
-            dd("expression"), dd("accessories"), dd("makeup"), seed)
+            dd("expression"), dd("accessories"), dd("makeup"),
+            dd("shoulders"), dd("chest"), out_bust, seed)
 
 
 def _collect_category_args(kwargs):

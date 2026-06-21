@@ -192,6 +192,44 @@ class TestBodyData(unittest.TestCase):
         for key in self.BODY_KEYS:
             self.assertIn(key, core.SEX_GATED, key)
 
+    def test_chest_in_description_male(self):
+        out = run(sex="male", chest=("fixed", "", "broad"))
+        self.assertIn("a broad chest", out[0])
+
+    def test_bust_combines_size_and_shape_female(self):
+        out = run(sex="female",
+                  bust_size=("fixed", "", "full"),
+                  bust_shape=("fixed", "", "round"))
+        self.assertIn("a full, round bust", out[0])
+
+    def test_bust_size_only_female(self):
+        out = run(sex="female", bust_size=("fixed", "", "petite"),
+                  bust_shape=("off", "", "(none)"))
+        self.assertIn("a petite bust", out[0])
+
+    def test_shoulders_pin_present(self):
+        names = core.RETURN_NAMES
+        self.assertIn("shoulders", names)
+        self.assertIn("chest", names)
+        self.assertIn("bust", names)
+        out = run(sex="male", shoulders=("fixed", "", "broad"))
+        idx = names.index("shoulders")
+        self.assertEqual(out[idx], "broad shoulders")
+
+    def test_male_never_grows_bust(self):
+        for seed in range(30):
+            out = run(seed=seed, sex="male",
+                      bust_size=("random", "", "(none)"),
+                      bust_shape=("random", "", "(none)"))
+            bust_idx = core.RETURN_NAMES.index("bust")
+            self.assertEqual(out[bust_idx], "", seed)
+
+    def test_female_never_grows_chest(self):
+        for seed in range(30):
+            out = run(seed=seed, sex="female", chest=("random", "", "(none)"))
+            chest_idx = core.RETURN_NAMES.index("chest")
+            self.assertEqual(out[chest_idx], "", seed)
+
 
 if __name__ == "__main__":
     unittest.main()
