@@ -12,7 +12,7 @@ The nodes appear in the **Add Node** menu under **Random Person**:
 
 - **Random Person AIO (All-In-One)** - the full node, every attribute on one node.
 - **Random Person: Identity** - sex, age, nationality, complexion, skin texture.
-- **Random Person: Face & Expression** - face shape, eyes, eyebrows, nose, mouth, distinctive features, expression.
+- **Random Person: Face** - face shape, eyes, eyebrows, nose, mouth, distinctive features, expression.
 - **Random Person: Hair** - hair colour, style, length, facial hair.
 - **Random Person: Body** - build, shoulders, chest, bust size and shape.
 - **Random Person: Style** - accessories, makeup, clothing, and footwear.

@@ -482,7 +482,7 @@ NODE_SPECS = [
     ("RandomPersonIdentity", "Random Person: Identity",
      ["nationality", "complexion", "skin_texture"], True,
      ("description", "sex", "age", "nationality", "complexion", "seed")),
-    ("RandomPersonFace", "Random Person: Face & Expression",
+    ("RandomPersonFace", "Random Person: Face",
      ["face_shape", "eyes", "eye_shape", "eyebrows", "nose_shape",
       "mouth_shape", "face_feature", "expression"], False,
      ("description", "sex", "face", "expression", "seed")),
