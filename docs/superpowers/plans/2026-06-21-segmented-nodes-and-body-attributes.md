@@ -1113,7 +1113,7 @@ In `README.md`, in the Output Pins table, add rows after the `body_type` row:
 | `bust` | Combined bust size and shape, female (empty when off / male) | `a full, round bust` |
 ```
 
-- [ ] **Step 4: Bump the version**
+- [ ] **Step 4: Bump the version and refresh registry description**
 
 In `pyproject.toml`, change:
 
@@ -1125,6 +1125,12 @@ to:
 
 ```toml
 version = "1.1.0"
+```
+
+Also update the stale `[project].description` (it still says "Located under Add Node > utils. Node name: Random Person Description."). Replace that trailing sentence so it reads:
+
+```toml
+description = "Generate randomised, structured physical person descriptions for image-generation prompts. Sex-aware traits, per-category random/allow_list/fixed/off modes, age ranges, body details, and individual output pins. Full node plus Identity, Face, Hair, Body, and Style segment nodes under the Random Person menu category."
 ```
 
 - [ ] **Step 5: Final full test run**
