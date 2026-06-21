@@ -231,7 +231,7 @@ flat, average, broad, muscular, barrel
 > Sex-gated: males only. Females have a stub entry so the dropdown is populated but a random female never produces chest text. Defaults to `off`.
 
 ### Bust Size (female)
-petite, small, average, full, large
+petite, small, average, full, large, extra large
 
 > Sex-gated: females only. Males have a stub entry so a random male never produces bust text. Defaults to `off`.
 

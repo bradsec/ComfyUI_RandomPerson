@@ -35,7 +35,7 @@ const FEMALE_ONLY = {
     clothing_fixed:     ["blouse","camisole","cardigan","cocktail dress","jumpsuit","knit sweater","maxi dress","off-shoulder top","peplum top","sundress","wool coat","wrap dress"],
     shoulders_fixed:   ["soft"],
     chest_fixed:       [],
-    bust_size_fixed:   ["average","full","large","petite","small"],
+    bust_size_fixed:   ["average","extra large","full","large","petite","small"],
     bust_shape_fixed:  ["close-set","natural","round","teardrop","wide-set"],
 };
 
