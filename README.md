@@ -271,9 +271,9 @@ none, natural makeup, soft makeup, minimal makeup, bold makeup, glam makeup, smo
 
 ### Footwear
 
-**Male (25):** ankle boots, bare feet, basketball shoes, boat shoes, brogues, canvas shoes, chelsea boots, combat boots, crocs, derby shoes, dress shoes, espadrilles, flip-flops, hiking boots, high-top sneakers, loafers, moccasins, oxford shoes, running shoes, sandals, skate shoes, slides, slippers, sneakers, work boots
+**Male (28):** ankle boots, bare feet, basketball shoes, boat shoes, brogues, canvas shoes, chelsea boots, combat boots, crocs, derby shoes, dress shoes, espadrilles, flip-flops, formal shoes, high-top sneakers, hiking boots, hiking shoes, loafers, moccasins, oxford shoes, running shoes, sandals, skate shoes, slides, slippers, sneakers, tactical boots, work boots
 
-**Female (34):** ankle boots, ballet flats, bare feet, basketball shoes, boat shoes, brogues, canvas shoes, chelsea boots, combat boots, crocs, derby shoes, dress shoes, espadrilles, flip-flops, hiking boots, high heels, high-top sneakers, kitten heels, knee-high boots, loafers, mary janes, moccasins, oxford shoes, platform heels, running shoes, sandals, skate shoes, slides, slippers, sneakers, stilettos, strappy heels, wedges, work boots
+**Female (38):** ankle boots, ballet flats, bare feet, basketball shoes, boat shoes, brogues, canvas shoes, chelsea boots, combat boots, crocs, derby shoes, dress shoes, espadrilles, flip-flops, formal shoes, high boots, high heels, high-top sneakers, hiking boots, hiking shoes, kitten heels, knee-high boots, loafers, mary janes, moccasins, oxford shoes, platform heels, running shoes, sandals, skate shoes, slides, slippers, sneakers, stilettos, strappy heels, tactical boots, wedges, work boots
 
 > Sex-gated. Heels and flats are female-only; the rest are shared. Defaults to `off`.
 

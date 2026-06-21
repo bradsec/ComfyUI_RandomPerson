@@ -34,7 +34,7 @@ const FEMALE_ONLY = {
     facial_hair_fixed:  [],
     makeup_fixed:       ["bold lipstick","bold makeup","glam makeup","minimal makeup","natural makeup","red lipstick","smokey eye","soft makeup","winged eyeliner"],
     clothing_fixed:     ["blouse","camisole","cardigan","cocktail dress","jumpsuit","knit sweater","maxi dress","off-shoulder top","peplum top","sundress","wool coat","wrap dress"],
-    footwear_fixed:     ["ballet flats","high heels","kitten heels","knee-high boots","mary janes","platform heels","stilettos","strappy heels","wedges"],
+    footwear_fixed:     ["ballet flats","high boots","high heels","kitten heels","knee-high boots","mary janes","platform heels","stilettos","strappy heels","wedges"],
     shoulders_fixed:   ["soft"],
     chest_fixed:       [],
     bust_size_fixed:   ["average","extra large","full","large","petite","small"],
