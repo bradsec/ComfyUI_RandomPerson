@@ -16,8 +16,48 @@
     "description": "glowing skin"
   },
   {
+    "label": "matte",
+    "description": "matte skin"
+  },
+  {
+    "label": "oily",
+    "description": "an oily sheen"
+  },
+  {
+    "label": "large pores",
+    "description": "visibly large pores"
+  },
+  {
     "label": "freckled",
     "description": "freckled skin"
+  },
+  {
+    "label": "beauty spots",
+    "description": "scattered beauty spots"
+  },
+  {
+    "label": "moles",
+    "description": "a few small moles"
+  },
+  {
+    "label": "blemished",
+    "description": "blemished skin"
+  },
+  {
+    "label": "acne scars",
+    "description": "faint acne scarring"
+  },
+  {
+    "label": "rosacea",
+    "description": "a rosacea flush across the cheeks"
+  },
+  {
+    "label": "vitiligo",
+    "description": "patches of vitiligo"
+  },
+  {
+    "label": "ruddy",
+    "description": "a ruddy complexion"
   },
   {
     "label": "fine lines",
@@ -32,11 +72,11 @@
     "description": "sun-spotted skin"
   },
   {
-    "label": "acne scars",
-    "description": "faint acne scarring"
+    "label": "weathered",
+    "description": "weathered skin"
   },
   {
-    "label": "ruddy",
-    "description": "a ruddy complexion"
+    "label": "leathery",
+    "description": "leathery, sun-aged skin"
   }
 ]

@@ -88,6 +88,29 @@ class TestSelection(unittest.TestCase):
         self.assertIn("tan", out[4])
         self.assertIn("freckled", out[4])
 
+    def test_eye_shape_merges_into_eyes(self):
+        # eye_shape sits in front of the eye colour, single "eyes" suffix, and
+        # surfaces in the face pin.
+        out = run(eye_shape=("fixed", "", "almond"),
+                  eyes=("fixed", "", "green"))
+        self.assertIn("almond", out[5])          # face pin
+        self.assertIn("eyes", out[5])
+        self.assertNotIn("eyes eyes", out[0])
+
+    def test_eye_shape_alone_gets_suffix(self):
+        out = run(eye_shape=("fixed", "", "hooded"), eyes=("off", "", "(none)"))
+        self.assertIn("hooded eyes", out[5])
+
+    def test_eyebrows_pin_and_off(self):
+        on = run(eyebrows=("fixed", "", "thick"))
+        self.assertIn("thick", on[5])            # face pin carries eyebrows
+        off = run(eyebrows=("off", "", "(none)"))
+        self.assertNotIn("eyebrow", off[5].lower())
+
+    def test_eyebrows_default_off(self):
+        req = core.RandomPersonNode.INPUT_TYPES()["required"]
+        self.assertEqual(req["eyebrows_mode"][1]["default"], "off")
+
     def test_expression_pin_and_off(self):
         on = run(expression=("fixed", "", "serious"))
         self.assertIn("serious", on[9])

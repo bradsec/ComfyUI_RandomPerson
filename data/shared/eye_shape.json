@@ -1,0 +1,50 @@
+[
+  {
+    "label": "almond",
+    "description": "almond"
+  },
+  {
+    "label": "round",
+    "description": "round"
+  },
+  {
+    "label": "hooded",
+    "description": "hooded"
+  },
+  {
+    "label": "monolid",
+    "description": "monolid"
+  },
+  {
+    "label": "deep-set",
+    "description": "deep-set"
+  },
+  {
+    "label": "wide-set",
+    "description": "wide-set"
+  },
+  {
+    "label": "close-set",
+    "description": "close-set"
+  },
+  {
+    "label": "upturned",
+    "description": "upturned"
+  },
+  {
+    "label": "downturned",
+    "description": "downturned"
+  },
+  {
+    "label": "heavy-lidded",
+    "description": "heavy-lidded"
+  },
+  {
+    "label": "narrow",
+    "description": "narrow"
+  },
+  {
+    "label": "large",
+    "description": "large, expressive"
+  }
+]

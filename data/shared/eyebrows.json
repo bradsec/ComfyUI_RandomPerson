@@ -1,0 +1,50 @@
+[
+  {
+    "label": "thick",
+    "description": "thick eyebrows"
+  },
+  {
+    "label": "thin",
+    "description": "thin eyebrows"
+  },
+  {
+    "label": "arched",
+    "description": "arched eyebrows"
+  },
+  {
+    "label": "high arched",
+    "description": "high arched eyebrows"
+  },
+  {
+    "label": "straight",
+    "description": "straight brows"
+  },
+  {
+    "label": "bushy",
+    "description": "bushy eyebrows"
+  },
+  {
+    "label": "full natural",
+    "description": "full natural brows"
+  },
+  {
+    "label": "sparse",
+    "description": "sparse brows"
+  },
+  {
+    "label": "well-groomed",
+    "description": "neatly groomed eyebrows"
+  },
+  {
+    "label": "rounded",
+    "description": "softly rounded brows"
+  },
+  {
+    "label": "angular",
+    "description": "sharply angled eyebrows"
+  },
+  {
+    "label": "feathered",
+    "description": "feathered brows"
+  }
+]

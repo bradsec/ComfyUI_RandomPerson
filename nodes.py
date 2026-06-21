@@ -93,6 +93,8 @@ _MAKEUP_LABELS       = ["(none)"] + _union(_labels(load_sex("male", "makeup.json
 
 # Shared (sex-agnostic) lists.
 _SKIN_TEXTURE_LABELS = ["(none)"] + _labels(load_shared("skin_texture.json"))
+_EYE_SHAPE_LABELS    = ["(none)"] + _labels(load_shared("eye_shape.json"))
+_EYEBROWS_LABELS     = ["(none)"] + _labels(load_shared("eyebrows.json"))
 _ACCESSORIES_LABELS  = ["(none)"] + _labels(load_shared("accessories.json"))
 _EXPRESSION_LABELS   = ["(none)"] + _labels(load_shared("expression.json"))
 
@@ -103,6 +105,8 @@ CATEGORY_SPECS = [
     ("complexion",   _COMP_LABELS,         "e.g. fair, olive, deep brown"),
     ("skin_texture", _SKIN_TEXTURE_LABELS, "e.g. smooth, freckled, wrinkled"),
     ("eyes",         _EYES_LABELS,         "e.g. deep brown, ice blue, hazel"),
+    ("eye_shape",    _EYE_SHAPE_LABELS,    "e.g. almond, hooded, monolid, round"),
+    ("eyebrows",     _EYEBROWS_LABELS,     "e.g. thick, arched, straight, bushy"),
     ("face_shape",   _FACE_SHAPE_LABELS,   "e.g. oval, square, heart"),
     ("nose_shape",   _NOSE_SHAPE_LABELS,   "e.g. straight nose, broad nose, snub nose"),
     ("mouth_shape",  _MOUTH_SHAPE_LABELS,  "e.g. full lips, thin lips, wide mouth"),
@@ -125,7 +129,7 @@ SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape
 # clean and realistic; the user opts them in per category. Core identity
 # categories (nationality, complexion, eyes, face/nose/mouth shape, hair, body)
 # default to "random".
-DEFAULT_OFF = {"skin_texture", "face_feature", "facial_hair",
+DEFAULT_OFF = {"skin_texture", "eyebrows", "face_feature", "facial_hair",
                "expression", "accessories", "makeup"}
 
 
@@ -264,7 +268,8 @@ def nat_text(item):
 def build_description(sex, nat, age, skin_texture,
                       face_shape, complexion, eyes, nose_shape, mouth_shape, face_feature,
                       hair_color, hair_style, hair_length, facial_hair,
-                      body, expression, accessories, makeup, extra_attributes=""):
+                      body, expression, accessories, makeup, extra_attributes="",
+                      eye_shape=None, eyebrows=None):
     """Produce a single comma-separated descriptor string."""
     parts = []
 
@@ -285,9 +290,12 @@ def build_description(sex, nat, age, skin_texture,
     add(face_shape, "{} face")
     add(complexion, "{} complexion")
     add(skin_texture)
-    if eyes:
-        eyes_str = d(eyes)
-        parts.append(eyes_str if "eyes" in eyes_str.lower() else f"{eyes_str} eyes")
+    shape_str = d(eye_shape).strip() if eye_shape else ""
+    if eyes or shape_str:
+        color_str = d(eyes).strip() if eyes else ""
+        base = (color_str if "eyes" in color_str.lower() else f"{color_str} eyes") if color_str else "eyes"
+        parts.append(f"{shape_str} {base}" if shape_str else base)
+    add(eyebrows)
     add(nose_shape)
     add(mouth_shape)
     add(face_feature)
@@ -354,7 +362,7 @@ def generate_person(seed, randomize, sex, category_args,
         p["face_shape"], p["complexion"], p["eyes"], p["nose_shape"], p["mouth_shape"], p["face_feature"],
         p["hair_color"], p["hair_style"], p["hair_length"], p["facial_hair"],
         p["body_type"], p["expression"], p["accessories"], p["makeup"],
-        extra_attributes)
+        extra_attributes, eye_shape=p["eye_shape"], eyebrows=p["eyebrows"])
 
     def dd(key, sub_key="description"):
         item = p[key]
@@ -366,12 +374,17 @@ def generate_person(seed, randomize, sex, category_args,
     out_hair = " ".join(filter(None, [dd("hair_color"), dd("hair_length"), dd("hair_style")]))
 
     def _eyes_str():
-        s = dd("eyes")
-        return (s if "eyes" in s.lower() else f"{s} eyes") if s else ""
+        shape = dd("eye_shape")
+        color = dd("eyes")
+        if not (shape or color):
+            return ""
+        base = (color if "eyes" in color.lower() else f"{color} eyes") if color else "eyes"
+        return f"{shape} {base}" if shape else base
 
     out_face = ", ".join(filter(None, [
         f"{dd('face_shape')} face" if dd("face_shape") else "",
         _eyes_str(),
+        dd("eyebrows"),
         dd("nose_shape"),
         dd("mouth_shape"),
         dd("face_feature"),

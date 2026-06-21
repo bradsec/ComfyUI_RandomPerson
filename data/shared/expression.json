@@ -16,6 +16,10 @@
     "description": "a slight smile"
   },
   {
+    "label": "gentle smile",
+    "description": "a gentle smile"
+  },
+  {
     "label": "serious",
     "description": "a serious expression"
   },
@@ -26,6 +30,10 @@
   {
     "label": "pensive",
     "description": "a pensive look"
+  },
+  {
+    "label": "contemplative",
+    "description": "a contemplative expression"
   },
   {
     "label": "confident",
@@ -40,7 +48,55 @@
     "description": "an intense gaze"
   },
   {
+    "label": "focused",
+    "description": "a focused expression"
+  },
+  {
+    "label": "smirk",
+    "description": "a slight smirk"
+  },
+  {
+    "label": "raised eyebrow",
+    "description": "one eyebrow raised"
+  },
+  {
+    "label": "playful",
+    "description": "a playful look"
+  },
+  {
+    "label": "mischievous",
+    "description": "a mischievous grin"
+  },
+  {
+    "label": "surprised",
+    "description": "a surprised look"
+  },
+  {
+    "label": "slight frown",
+    "description": "a slight frown"
+  },
+  {
+    "label": "downcast",
+    "description": "a downcast expression"
+  },
+  {
+    "label": "wistful",
+    "description": "a wistful look"
+  },
+  {
+    "label": "weary",
+    "description": "a weary expression"
+  },
+  {
+    "label": "brooding",
+    "description": "a brooding expression"
+  },
+  {
     "label": "laughing",
     "description": "laughing"
+  },
+  {
+    "label": "joyful",
+    "description": "a joyful, beaming smile"
   }
 ]

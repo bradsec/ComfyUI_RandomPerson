@@ -28,12 +28,32 @@
     "description": "sunglasses"
   },
   {
+    "label": "aviator sunglasses",
+    "description": "aviator sunglasses"
+  },
+  {
     "label": "stud earrings",
     "description": "stud earrings"
   },
   {
     "label": "hoop earrings",
     "description": "hoop earrings"
+  },
+  {
+    "label": "drop earrings",
+    "description": "drop earrings"
+  },
+  {
+    "label": "ear cuff",
+    "description": "an ear cuff"
+  },
+  {
+    "label": "multiple ear piercings",
+    "description": "multiple ear piercings"
+  },
+  {
+    "label": "small ear piercings",
+    "description": "small ear piercings"
   },
   {
     "label": "nose ring",
@@ -44,7 +64,39 @@
     "description": "a nose stud"
   },
   {
-    "label": "small ear piercings",
-    "description": "small ear piercings"
+    "label": "septum ring",
+    "description": "a septum ring"
+  },
+  {
+    "label": "eyebrow piercing",
+    "description": "an eyebrow piercing"
+  },
+  {
+    "label": "labret piercing",
+    "description": "a labret piercing"
+  },
+  {
+    "label": "pendant necklace",
+    "description": "a pendant necklace"
+  },
+  {
+    "label": "choker",
+    "description": "a choker"
+  },
+  {
+    "label": "headscarf",
+    "description": "a headscarf"
+  },
+  {
+    "label": "beanie",
+    "description": "a beanie"
+  },
+  {
+    "label": "cap",
+    "description": "a cap"
+  },
+  {
+    "label": "bindi",
+    "description": "a bindi"
   }
 ]

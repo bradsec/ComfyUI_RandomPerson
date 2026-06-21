@@ -6,7 +6,7 @@ Generates a randomised, structured physical description of a person to drop stra
 
 ## Purpose
 
-When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
+When a prompt leaves appearance vague, diffusion models fall back on a narrow set of "default" faces, so every person in a batch looks the same. This node supplies a specific, well-formed description on each run, covering nationality, age, complexion and skin texture, eye colour and shape, eyebrows, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Varying those traits per seed pushes the model off its defaults toward distinct, individual people. Lock the traits you care about, let the rest randomise.
 
 The node will be located under **Add Node > utils**. Node name: **Random Person Description**.
 
@@ -45,7 +45,7 @@ The node appears in the **Add Node** menu under **utils > Random Person Descript
 | `age` | Age as a plain number | `43` |
 | `nationality` | Nationality descriptor | `Russian` |
 | `complexion` | Skin tone and texture | `light medium, smooth skin` |
-| `face` | Combined face attributes (shape, eyes, nose, mouth, distinctive feature) | `angular face, natural grey eyes, button nose, wide-set lips, a faint scar through one eyebrow` |
+| `face` | Combined face attributes (shape, eye colour and shape, eyebrows, nose, mouth, distinctive feature) | `angular face, almond natural grey eyes, arched eyebrows, button nose, wide-set lips, a faint scar through one eyebrow` |
 | `hair` | Combined hair description | `red very short hair worn twist out` |
 | `facial_hair` | Beard / moustache style (empty for clean shaven) | `a van dyke beard` |
 | `body_type` | Build | `muscular` |
