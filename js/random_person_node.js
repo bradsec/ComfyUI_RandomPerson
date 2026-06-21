@@ -14,6 +14,10 @@ const MALE_ONLY = {
     face_feature_fixed: ["birthmark on jaw","heavy brow","mole on cheek","strong jaw","weathered skin"],
     facial_hair_fixed:  ["circle beard","full beard","goatee","heavy stubble","light stubble","moustache","mutton chops","short beard","soul patch","van dyke"],
     makeup_fixed:       [],
+    shoulders_fixed:   ["muscular"],
+    chest_fixed:       ["average","barrel","broad","flat","muscular"],
+    bust_size_fixed:   [],
+    bust_shape_fixed:  [],
 };
 
 const FEMALE_ONLY = {
@@ -27,9 +31,21 @@ const FEMALE_ONLY = {
     face_feature_fixed: ["arched brows","beauty mark","birthmark","wide eyes"],
     facial_hair_fixed:  [],
     makeup_fixed:       ["bold lipstick","bold makeup","glam makeup","minimal makeup","natural makeup","red lipstick","smokey eye","soft makeup","winged eyeliner"],
+    shoulders_fixed:   ["soft"],
+    chest_fixed:       [],
+    bust_size_fixed:   ["average","full","large","petite","small"],
+    bust_shape_fixed:  ["close-set","natural","round","teardrop","wide-set"],
 };
 
 const SEX_GATED_WIDGETS = Object.keys(MALE_ONLY);
+
+const GATED_NODE_IDS = new Set([
+    "RandomPersonNode",
+    "RandomPersonFace",
+    "RandomPersonHair",
+    "RandomPersonBody",
+    "RandomPersonStyle",
+]);
 
 // ── Apply sex filter to all gated widgets on a node ───────────────────────────
 
@@ -65,7 +81,7 @@ app.registerExtension({
     name: "RandomPersonNode.SexAwareWidgets",
 
     async beforeRegisterNodeDef(nodeType, nodeData) {
-        if (nodeData.name !== "RandomPersonNode") return;
+        if (!GATED_NODE_IDS.has(nodeData.name)) return;
 
         const onNodeCreated = nodeType.prototype.onNodeCreated;
         nodeType.prototype.onNodeCreated = function () {
@@ -104,7 +120,7 @@ app.registerExtension({
 
     // Re-apply after workflow load — widget values are restored before nodeCreated fires
     async nodeCreated(node) {
-        if (node.comfyClass !== "RandomPersonNode") return;
+        if (!GATED_NODE_IDS.has(node.comfyClass)) return;
         const sexWidget = node.widgets?.find(w => w.name === "sex");
         if (sexWidget) {
             setTimeout(() => applyFilters(node, sexWidget.value), 50);
