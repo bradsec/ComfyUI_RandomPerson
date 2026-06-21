@@ -1,8 +1,8 @@
-# Random Person Description - Custom node for ComfyUI
+# Random Person Description - Custom nodes for ComfyUI
 
 Generates a randomised, structured physical description of a person to drop straight into an image generation prompt. Every attribute is drawn from curated JSON data files, chosen to keep the output realistic and unambiguous for diffusion models.
 
-![node](samples/node.png)
+![grid images](samples/gridimages.jpg)
 
 ## Purpose
 
@@ -10,12 +10,14 @@ When a prompt leaves appearance vague, diffusion models fall back on a narrow se
 
 The nodes appear in the **Add Node** menu under **Random Person**:
 
-- **Random Person AIO (All-In-One)** - the full node, every attribute on one node.
+- **Random Person AIO (All-In-One)** - the full node, every attribute on one node (very tall).
 - **Random Person: Identity** - sex, age, nationality, complexion, skin texture.
 - **Random Person: Face** - face shape, eyes, eyebrows, nose, mouth, distinctive features, expression.
 - **Random Person: Hair** - hair colour, style, length, facial hair.
 - **Random Person: Body** - build, shoulders, chest, bust size and shape.
 - **Random Person: Style** - accessories, makeup, clothing, and footwear.
+
+![grid nodes](samples/gridnodes.jpg)
 
 The AIO node exposes every category at once, so it is a very tall node. You do not have to use it: if you only need part of a person, or want a shorter, tidier graph, use the relevant segment node on its own. The segment nodes are independent generators - each has its own seed and sex and emits only its group's fragment. Use one alone, or wire several together (set the same `sex` on each) and concatenate their full description outputs with any string node to assemble a complete prompt.
 
