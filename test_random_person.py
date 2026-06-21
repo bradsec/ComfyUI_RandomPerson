@@ -154,5 +154,34 @@ class TestBuildDescription(unittest.TestCase):
         self.assertNotIn("eyes eyes", s)
 
 
+class TestBodyData(unittest.TestCase):
+
+    BODY_KEYS = ("shoulders", "chest", "bust_size", "bust_shape")
+
+    def test_all_body_files_load(self):
+        for sex in ("male", "female"):
+            for key in self.BODY_KEYS:
+                data = core.load_sex(sex, f"{key}.json")
+                self.assertTrue(len(data) >= 1, f"{sex}/{key}")
+                for item in data:
+                    self.assertIn("label", item)
+                    self.assertIn("description", item)
+
+    def test_male_bust_is_stub(self):
+        for key in ("bust_size", "bust_shape"):
+            labels = [i["label"] for i in core.load_sex("male", f"{key}.json")]
+            self.assertEqual(labels, ["none"], key)
+
+    def test_female_chest_is_stub(self):
+        labels = [i["label"] for i in core.load_sex("female", "chest.json")]
+        self.assertEqual(labels, ["none"])
+
+    def test_shoulders_real_for_both(self):
+        for sex in ("male", "female"):
+            labels = [i["label"] for i in core.load_sex(sex, "shoulders.json")]
+            self.assertGreater(len(labels), 1, sex)
+            self.assertNotIn("none", labels)
+
+
 if __name__ == "__main__":
     unittest.main()

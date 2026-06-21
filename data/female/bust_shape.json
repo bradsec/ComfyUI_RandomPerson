@@ -1,0 +1,7 @@
+[
+  { "label": "round",     "description": "round" },
+  { "label": "teardrop",  "description": "teardrop" },
+  { "label": "wide-set",  "description": "wide-set" },
+  { "label": "close-set", "description": "close-set" },
+  { "label": "natural",   "description": "natural" }
+]

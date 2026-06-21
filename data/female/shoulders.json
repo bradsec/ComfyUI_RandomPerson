@@ -1,0 +1,8 @@
+[
+  { "label": "narrow",  "description": "narrow shoulders" },
+  { "label": "average", "description": "average shoulders" },
+  { "label": "broad",   "description": "broad shoulders" },
+  { "label": "sloping", "description": "sloping shoulders" },
+  { "label": "square",  "description": "square shoulders" },
+  { "label": "soft",    "description": "soft shoulders" }
+]

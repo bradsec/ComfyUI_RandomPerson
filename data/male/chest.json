@@ -1,0 +1,7 @@
+[
+  { "label": "flat",     "description": "a flat chest" },
+  { "label": "average",  "description": "an average chest" },
+  { "label": "broad",    "description": "a broad chest" },
+  { "label": "muscular", "description": "a muscular chest" },
+  { "label": "barrel",   "description": "a barrel chest" }
+]

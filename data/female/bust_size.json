@@ -1,0 +1,7 @@
+[
+  { "label": "petite",  "description": "petite" },
+  { "label": "small",   "description": "small" },
+  { "label": "average", "description": "average" },
+  { "label": "full",    "description": "full" },
+  { "label": "large",   "description": "large" }
+]
