@@ -182,6 +182,16 @@ class TestBodyData(unittest.TestCase):
             self.assertGreater(len(labels), 1, sex)
             self.assertNotIn("none", labels)
 
+    def test_body_categories_default_off(self):
+        req = core.RandomPersonNode.INPUT_TYPES()["required"]
+        for key in self.BODY_KEYS:
+            self.assertIn(f"{key}_mode", req, key)
+            self.assertEqual(req[f"{key}_mode"][1]["default"], "off", key)
+
+    def test_body_categories_are_sex_gated(self):
+        for key in self.BODY_KEYS:
+            self.assertIn(key, core.SEX_GATED, key)
+
 
 if __name__ == "__main__":
     unittest.main()

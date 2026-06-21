@@ -90,6 +90,14 @@ _FACIAL_HAIR_LABELS  = ["(none)"] + _union(_labels(load_sex("male", "facial_hair
                                            _labels(load_sex("female", "facial_hair.json")))
 _MAKEUP_LABELS       = ["(none)"] + _union(_labels(load_sex("male", "makeup.json")),
                                            _labels(load_sex("female", "makeup.json")))
+_SHOULDERS_LABELS   = ["(none)"] + _union(_labels(load_sex("male", "shoulders.json")),
+                                          _labels(load_sex("female", "shoulders.json")))
+_CHEST_LABELS       = ["(none)"] + _union(_labels(load_sex("male", "chest.json")),
+                                          _labels(load_sex("female", "chest.json")))
+_BUST_SIZE_LABELS   = ["(none)"] + _union(_labels(load_sex("male", "bust_size.json")),
+                                          _labels(load_sex("female", "bust_size.json")))
+_BUST_SHAPE_LABELS  = ["(none)"] + _union(_labels(load_sex("male", "bust_shape.json")),
+                                          _labels(load_sex("female", "bust_shape.json")))
 
 # Shared (sex-agnostic) lists.
 _SKIN_TEXTURE_LABELS = ["(none)"] + _labels(load_shared("skin_texture.json"))
@@ -116,6 +124,10 @@ CATEGORY_SPECS = [
     ("hair_length",  _HAIR_LENGTH_LABELS,  "e.g. short, medium, long"),
     ("facial_hair",  _FACIAL_HAIR_LABELS,  "e.g. full beard, stubble, goatee"),
     ("body_type",    _BODY_TYPE_LABELS,    "e.g. athletic, slim, curvy, stocky"),
+    ("shoulders",    _SHOULDERS_LABELS,    "e.g. broad, narrow, sloping"),
+    ("chest",        _CHEST_LABELS,        "e.g. broad, muscular, barrel"),
+    ("bust_size",    _BUST_SIZE_LABELS,    "e.g. petite, average, full"),
+    ("bust_shape",   _BUST_SHAPE_LABELS,   "e.g. round, teardrop, natural"),
     ("expression",   _EXPRESSION_LABELS,   "e.g. soft smile, serious, confident"),
     ("accessories",  _ACCESSORIES_LABELS,  "e.g. glasses, hoop earrings, nose ring"),
     ("makeup",       _MAKEUP_LABELS,       "e.g. natural makeup, bold lipstick, smokey eye"),
@@ -123,14 +135,16 @@ CATEGORY_SPECS = [
 
 # Categories whose data lives under data/<sex>/ rather than data/shared/.
 SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape",
-             "nose_shape", "mouth_shape", "face_feature", "facial_hair", "makeup"}
+             "nose_shape", "mouth_shape", "face_feature", "facial_hair", "makeup",
+             "shoulders", "chest", "bust_size", "bust_shape"}
 
 # Optional "flair" categories default to mode "off" so the base description stays
 # clean and realistic; the user opts them in per category. Core identity
 # categories (nationality, complexion, eyes, face/nose/mouth shape, hair, body)
 # default to "random".
 DEFAULT_OFF = {"skin_texture", "eyebrows", "face_feature", "facial_hair",
-               "expression", "accessories", "makeup"}
+               "expression", "accessories", "makeup",
+               "shoulders", "chest", "bust_size", "bust_shape"}
 
 
 def _mode_default(key):
