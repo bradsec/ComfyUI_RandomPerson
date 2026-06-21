@@ -265,5 +265,57 @@ class TestBodyData(unittest.TestCase):
             self.assertEqual(out[chest_idx], "", seed)
 
 
+class TestSegmentNodes(unittest.TestCase):
+
+    def _node(self, node_id):
+        return core.NODE_CLASS_MAPPINGS[node_id]
+
+    def test_all_nodes_registered(self):
+        for node_id in ("RandomPersonNode", "RandomPersonIdentity",
+                        "RandomPersonFace", "RandomPersonHair",
+                        "RandomPersonBody", "RandomPersonStyle"):
+            self.assertIn(node_id, core.NODE_CLASS_MAPPINGS, node_id)
+
+    def test_all_nodes_in_random_person_category(self):
+        for cls in core.NODE_CLASS_MAPPINGS.values():
+            self.assertEqual(cls.CATEGORY, "Random Person")
+
+    def test_identity_exposes_only_its_widgets(self):
+        req = self._node("RandomPersonIdentity").INPUT_TYPES()["required"]
+        self.assertIn("nationality_mode", req)
+        self.assertIn("age_mode", req)
+        self.assertNotIn("eyes_mode", req)
+        self.assertNotIn("hair_color_mode", req)
+
+    def test_face_node_has_no_age(self):
+        req = self._node("RandomPersonFace").INPUT_TYPES()["required"]
+        self.assertIn("eyes_mode", req)
+        self.assertNotIn("age_mode", req)
+
+    def test_face_fragment_excludes_other_groups(self):
+        cls = self._node("RandomPersonFace")
+        kwargs = {}
+        req = cls.INPUT_TYPES()["required"]
+        for name, (typ, opts) in req.items():
+            if name.endswith("_mode"):
+                kwargs[name] = "random"
+            elif name.endswith("_allow_list"):
+                kwargs[name] = ""
+            elif name.endswith("_fixed"):
+                kwargs[name] = "(none)"
+        out = cls().generate(seed=3, randomize=False, sex="female", **kwargs)
+        names = cls.RETURN_NAMES
+        desc = out[names.index("description")]
+        self.assertNotIn("build", desc)        # body excluded
+        self.assertNotIn("hair", desc)         # hair excluded
+        self.assertNotIn("year old", desc)     # age excluded
+
+    def test_body_node_outputs_bust_pin(self):
+        cls = self._node("RandomPersonBody")
+        self.assertIn("bust", cls.RETURN_NAMES)
+        self.assertIn("shoulders", cls.RETURN_NAMES)
+        self.assertNotIn("hair", cls.RETURN_NAMES)
+
+
 if __name__ == "__main__":
     unittest.main()

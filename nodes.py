@@ -460,52 +460,100 @@ def person_dict(result):
     return dict(zip(RETURN_NAMES, result))
 
 
-# -- V1 node (legacy dict API) -------------------------------------------------
+# -- V1 node factory -----------------------------------------------------------
 
-class RandomPersonNode:
+_ALL_KEYS = [k for k, _, _ in CATEGORY_SPECS]
 
-    CATEGORY    = "utils"
-    FUNCTION    = "generate"
-    OUTPUT_NODE = False
-    DESCRIPTION = "Generate a randomised, structured physical person description for image prompts."
+# (node_id, display_name, category keys, include_age, output pin names)
+NODE_SPECS = [
+    ("RandomPersonNode", "Random Person Description", _ALL_KEYS, True, RETURN_NAMES),
+    ("RandomPersonIdentity", "Random Person: Identity",
+     ["nationality", "complexion", "skin_texture"], True,
+     ("description", "sex", "age", "nationality", "complexion", "seed")),
+    ("RandomPersonFace", "Random Person: Face & Expression",
+     ["face_shape", "eyes", "eye_shape", "eyebrows", "nose_shape",
+      "mouth_shape", "face_feature", "expression"], False,
+     ("description", "sex", "face", "expression", "seed")),
+    ("RandomPersonHair", "Random Person: Hair",
+     ["hair_color", "hair_style", "hair_length", "facial_hair"], False,
+     ("description", "sex", "hair", "facial_hair", "seed")),
+    ("RandomPersonBody", "Random Person: Body",
+     ["body_type", "shoulders", "chest", "bust_size", "bust_shape"], False,
+     ("description", "sex", "body_type", "shoulders", "chest", "bust", "seed")),
+    ("RandomPersonStyle", "Random Person: Style",
+     ["accessories", "makeup"], False,
+     ("description", "sex", "accessories", "makeup", "seed")),
+]
 
-    RETURN_TYPES = ("STRING",) * (len(RETURN_NAMES) - 1) + ("INT",)
-    RETURN_NAMES = RETURN_NAMES
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        required = {
-            "seed":      ("INT",     {"default": 0, "min": 0, "max": 0xFFFFFFFF, "tooltip": _SEED_TIP}),
-            "randomize": ("BOOLEAN", {"default": True, "tooltip": _RAND_TIP}),
-            "sex":       (SEX_MODES, {"default": "random", "tooltip": _SEX_TIP}),
-        }
-        for key, fixed_labels, placeholder in CATEGORY_SPECS:
-            required[f"{key}_mode"]       = (MODES, {"default": _mode_default(key), "tooltip": _MODE_TIP})
-            required[f"{key}_allow_list"] = ("STRING", {"default": "", "multiline": False,
-                                                        "placeholder": placeholder, "tooltip": _ALLOW_TIP})
-            required[f"{key}_fixed"]      = (fixed_labels, {"default": "(none)", "tooltip": _FIXED_TIP})
-        required["age_mode"]  = (AGE_MODES, {"default": "random"})
-        required["age_min"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMIN_TIP})
-        required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
-        required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
-        required["extra_attributes"] = ("STRING", {"default": "", "multiline": True,
-                                                   "placeholder": "e.g. wearing glasses, tattoo on left arm",
-                                                   "tooltip": _EXTRA_TIP})
-        return {"required": required}
-
-    def generate(self, seed, randomize, sex, age_mode, age_min, age_max,
-                 age_fixed, extra_attributes, **kwargs):
-        return generate_person(seed, randomize, sex, _collect_category_args(kwargs),
-                               age_mode, age_min, age_max, age_fixed, extra_attributes)
-
-    @classmethod
-    def IS_CHANGED(cls, randomize, seed, **kwargs):
-        # randomize=True -> always re-run; otherwise re-run only when seed changes.
-        return float("nan") if randomize else seed
+_NODE_DESCRIPTION = "Generate a randomised, structured physical person description for image prompts."
 
 
-NODE_CLASS_MAPPINGS        = {"RandomPersonNode": RandomPersonNode}
-NODE_DISPLAY_NAME_MAPPINGS = {"RandomPersonNode": "Random Person Description"}
+def make_v1_node(node_id, display_name, keys, include_age, output_names):
+    """Build a ComfyUI V1 node class exposing only `keys` and returning `output_names`."""
+    key_set = set(keys)
+
+    class _RandomPersonV1:
+        CATEGORY    = "Random Person"
+        FUNCTION    = "generate"
+        OUTPUT_NODE = False
+        DESCRIPTION = _NODE_DESCRIPTION
+        RETURN_NAMES = output_names
+        RETURN_TYPES = tuple("INT" if n == "seed" else "STRING" for n in output_names)
+
+        @classmethod
+        def INPUT_TYPES(cls):
+            required = {
+                "seed":      ("INT",     {"default": 0, "min": 0, "max": 0xFFFFFFFF, "tooltip": _SEED_TIP}),
+                "randomize": ("BOOLEAN", {"default": True, "tooltip": _RAND_TIP}),
+                "sex":       (SEX_MODES, {"default": "random", "tooltip": _SEX_TIP}),
+            }
+            for key, fixed_labels, placeholder in CATEGORY_SPECS:
+                if key not in key_set:
+                    continue
+                required[f"{key}_mode"]       = (MODES, {"default": _mode_default(key), "tooltip": _MODE_TIP})
+                required[f"{key}_allow_list"] = ("STRING", {"default": "", "multiline": False,
+                                                            "placeholder": placeholder, "tooltip": _ALLOW_TIP})
+                required[f"{key}_fixed"]      = (fixed_labels, {"default": "(none)", "tooltip": _FIXED_TIP})
+            if include_age:
+                required["age_mode"]  = (AGE_MODES, {"default": "random"})
+                required["age_min"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMIN_TIP})
+                required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
+                required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
+            required["extra_attributes"] = ("STRING", {"default": "", "multiline": True,
+                                                       "placeholder": "e.g. wearing glasses, tattoo on left arm",
+                                                       "tooltip": _EXTRA_TIP})
+            return {"required": required}
+
+        def generate(self, seed, randomize, sex, **kwargs):
+            age_mode  = kwargs.get("age_mode", "off") if include_age else "off"
+            age_min   = kwargs.get("age_min", 0)
+            age_max   = kwargs.get("age_max", 0)
+            age_fixed = kwargs.get("age_fixed", 0)
+            extra     = kwargs.get("extra_attributes", "")
+            cat_args  = _collect_category_args(kwargs, keys)
+            result    = generate_person(seed, randomize, sex, cat_args,
+                                        age_mode, age_min, age_max, age_fixed, extra)
+            dmap = person_dict(result)
+            return tuple(dmap[name] for name in output_names)
+
+        @classmethod
+        def IS_CHANGED(cls, randomize, seed, **kwargs):
+            return float("nan") if randomize else seed
+
+    _RandomPersonV1.__name__ = node_id
+    _RandomPersonV1.__qualname__ = node_id
+    return _RandomPersonV1
+
+
+NODE_CLASS_MAPPINGS = {}
+NODE_DISPLAY_NAME_MAPPINGS = {}
+for _spec in NODE_SPECS:
+    _cls = make_v1_node(*_spec)
+    NODE_CLASS_MAPPINGS[_spec[0]] = _cls
+    NODE_DISPLAY_NAME_MAPPINGS[_spec[0]] = _spec[1]
+
+# Backwards-compatible alias: tests and external imports reference this name.
+RandomPersonNode = NODE_CLASS_MAPPINGS["RandomPersonNode"]
 
 
 # -- V3 node (import-guarded comfy_api schema) ---------------------------------
