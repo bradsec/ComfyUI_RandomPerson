@@ -2,6 +2,8 @@
 
 Generates a randomised, structured physical description of a person for use in image generation prompts. Every attribute is drawn from curated JSON data files tuned for realistic, unambiguous output with SDXL and Flux models.
 
+![node](samples/node.png)
+
 ## Purpose
 
 Diffusion models drift toward a narrow set of "default" faces when a prompt leaves appearance vague, so batches of people start to look the same. This node feeds the model a specific, well-formed human description on every run: nationality, age, complexion and skin texture, eye colour, face shape and distinctive features, hair, facial hair, build, expression, accessories, and makeup. Pinning down those traits, and varying them per seed, pushes the model away from its defaults and toward more unique, individual people across a batch. Lock the traits you care about and let the rest randomise to explore variety without losing control.
@@ -11,18 +13,26 @@ The node will be located under **Add Node > utils**. Node name: **Random Person 
 **Example output (male):**
 ```
 74 year old Pakistani male, oval face, light complexion, wrinkled skin, pale light grey eyes,
-aquiline nose, wide-set lips, a scar through one eyebrow, ash grey shaved hair worn taper fade,
-a van dyke beard, athletic build, glasses
+aquiline nose, wide-set lips, a scar through one eyebrow, ash grey shaved hair worn taper fade, a van dyke beard, athletic build, glasses
 ```
 
 **Example output (female):**
 ```
-43 year old Russian female, angular face, light medium complexion, smooth skin, natural grey eyes,
-button nose, wide-set lips, a faint scar through one eyebrow, red very short hair worn twist out,
-muscular build, reading glasses, bold lipstick
+43 year old Russian female, angular face, light medium complexion, smooth skin, natural grey eyes, button nose, wide-set lips, a faint scar through one eyebrow, red very short hair worn twist out, muscular build, reading glasses, bold lipstick
 ```
 
 ---
+
+### Samples
+
+![grid_001](samples/grid_001.jpg)
+![grid_002](samples/grid_002.jpg)
+![grid_003](samples/grid_003.jpg)
+![grid_004](samples/grid_004.jpg)
+![grid_005](samples/grid_005.jpg)
+![grid_006](samples/grid_006.jpg)
+![grid_007](samples/grid_007.jpg)
+
 
 ## Installation
 
