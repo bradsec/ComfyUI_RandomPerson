@@ -528,7 +528,7 @@ def make_v1_node(node_id, display_name, keys, include_age, output_names):
                 required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
                 required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
             required["extra_attributes"] = ("STRING", {"default": "", "multiline": True,
-                                                       "placeholder": "e.g. wearing glasses, tattoo on left arm",
+                                                       "placeholder": "Add any extra details to pass into the description, e.g. wearing a red scarf, holding a coffee, tattoo on left arm, freckles",
                                                        "tooltip": _EXTRA_TIP})
             return {"required": required}
 
@@ -598,7 +598,7 @@ try:
                     ]
                 inputs.append(
                     io.String.Input("extra_attributes", default="", multiline=True,
-                                    placeholder="e.g. wearing glasses, tattoo on left arm", tooltip=_EXTRA_TIP))
+                                    placeholder="Add any extra details to pass into the description, e.g. wearing a red scarf, holding a coffee, tattoo on left arm, freckles", tooltip=_EXTRA_TIP))
                 outputs = []
                 for name in output_names:
                     if name == "seed":
