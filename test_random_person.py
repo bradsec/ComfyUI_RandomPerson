@@ -316,6 +316,17 @@ class TestSegmentNodes(unittest.TestCase):
         self.assertIn("shoulders", cls.RETURN_NAMES)
         self.assertNotIn("hair", cls.RETURN_NAMES)
 
+    def test_node_specs_cover_all_ids(self):
+        ids = [s[0] for s in core.NODE_SPECS]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(ids[0], "RandomPersonNode")
+        self.assertEqual(len(ids), 6)
+
+    def test_every_output_name_is_a_known_pin(self):
+        for _id, _name, _keys, _age, outs in core.NODE_SPECS:
+            for name in outs:
+                self.assertIn(name, core.RETURN_NAMES, f"{_id}:{name}")
+
 
 if __name__ == "__main__":
     unittest.main()

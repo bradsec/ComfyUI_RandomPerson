@@ -556,59 +556,82 @@ for _spec in NODE_SPECS:
 RandomPersonNode = NODE_CLASS_MAPPINGS["RandomPersonNode"]
 
 
-# -- V3 node (import-guarded comfy_api schema) ---------------------------------
+# -- V3 node factory (import-guarded comfy_api schema) -------------------------
 
 try:
     from comfy_api.v0_0_2 import io, ComfyExtension
 
-    class RandomPersonNodeV3(io.ComfyNode):
-        @classmethod
-        def define_schema(cls) -> io.Schema:
-            inputs = [
-                io.Int.Input("seed", default=0, min=0, max=0xFFFFFFFF, tooltip=_SEED_TIP),
-                io.Boolean.Input("randomize", default=True, tooltip=_RAND_TIP),
-                io.Combo.Input("sex", options=SEX_MODES, default="random", tooltip=_SEX_TIP),
-            ]
-            for key, fixed_labels, placeholder in CATEGORY_SPECS:
-                inputs += [
-                    io.Combo.Input(f"{key}_mode", options=MODES, default=_mode_default(key), tooltip=_MODE_TIP),
-                    io.String.Input(f"{key}_allow_list", default="", multiline=False,
-                                    placeholder=placeholder, tooltip=_ALLOW_TIP),
-                    io.Combo.Input(f"{key}_fixed", options=fixed_labels, default="(none)", tooltip=_FIXED_TIP),
+    def _make_v3_node(node_id, display_name, keys, include_age, output_names):
+        key_set = set(keys)
+
+        class _RandomPersonV3(io.ComfyNode):
+            @classmethod
+            def define_schema(cls) -> io.Schema:
+                inputs = [
+                    io.Int.Input("seed", default=0, min=0, max=0xFFFFFFFF, tooltip=_SEED_TIP),
+                    io.Boolean.Input("randomize", default=True, tooltip=_RAND_TIP),
+                    io.Combo.Input("sex", options=SEX_MODES, default="random", tooltip=_SEX_TIP),
                 ]
-            inputs += [
-                io.Combo.Input("age_mode", options=AGE_MODES, default="random"),
-                io.Int.Input("age_min", default=0, min=0, max=90, tooltip=_AGEMIN_TIP),
-                io.Int.Input("age_max", default=0, min=0, max=90, tooltip=_AGEMAX_TIP),
-                io.Int.Input("age_fixed", default=0, min=0, max=90, tooltip=_AGEFIX_TIP),
-                io.String.Input("extra_attributes", default="", multiline=True,
-                                placeholder="e.g. wearing glasses, tattoo on left arm", tooltip=_EXTRA_TIP),
-            ]
-            outputs = [io.String.Output(id=n, display_name=n) for n in RETURN_NAMES[:-1]]
-            outputs.append(io.Int.Output(id="seed", display_name="seed", tooltip=_SEED_TIP))
-            return io.Schema(
-                node_id="RandomPersonNode",
-                display_name="Random Person Description",
-                category="utils",
-                description=RandomPersonNode.DESCRIPTION,
-                inputs=inputs,
-                outputs=outputs,
-            )
+                for key, fixed_labels, placeholder in CATEGORY_SPECS:
+                    if key not in key_set:
+                        continue
+                    inputs += [
+                        io.Combo.Input(f"{key}_mode", options=MODES, default=_mode_default(key), tooltip=_MODE_TIP),
+                        io.String.Input(f"{key}_allow_list", default="", multiline=False,
+                                        placeholder=placeholder, tooltip=_ALLOW_TIP),
+                        io.Combo.Input(f"{key}_fixed", options=fixed_labels, default="(none)", tooltip=_FIXED_TIP),
+                    ]
+                if include_age:
+                    inputs += [
+                        io.Combo.Input("age_mode", options=AGE_MODES, default="random"),
+                        io.Int.Input("age_min", default=0, min=0, max=90, tooltip=_AGEMIN_TIP),
+                        io.Int.Input("age_max", default=0, min=0, max=90, tooltip=_AGEMAX_TIP),
+                        io.Int.Input("age_fixed", default=0, min=0, max=90, tooltip=_AGEFIX_TIP),
+                    ]
+                inputs.append(
+                    io.String.Input("extra_attributes", default="", multiline=True,
+                                    placeholder="e.g. wearing glasses, tattoo on left arm", tooltip=_EXTRA_TIP))
+                outputs = []
+                for name in output_names:
+                    if name == "seed":
+                        outputs.append(io.Int.Output(id="seed", display_name="seed", tooltip=_SEED_TIP))
+                    else:
+                        outputs.append(io.String.Output(id=name, display_name=name))
+                return io.Schema(
+                    node_id=node_id,
+                    display_name=display_name,
+                    category="Random Person",
+                    description=_NODE_DESCRIPTION,
+                    inputs=inputs,
+                    outputs=outputs,
+                )
 
-        @classmethod
-        def fingerprint_inputs(cls, randomize, seed, **kwargs):
-            return float("nan") if randomize else seed
+            @classmethod
+            def fingerprint_inputs(cls, randomize, seed, **kwargs):
+                return float("nan") if randomize else seed
 
-        @classmethod
-        def execute(cls, seed, randomize, sex, age_mode, age_min, age_max,
-                    age_fixed, extra_attributes, **kwargs) -> io.NodeOutput:
-            result = generate_person(seed, randomize, sex, _collect_category_args(kwargs),
-                                     age_mode, age_min, age_max, age_fixed, extra_attributes)
-            return io.NodeOutput(*result)
+            @classmethod
+            def execute(cls, seed, randomize, sex, **kwargs) -> io.NodeOutput:
+                age_mode  = kwargs.get("age_mode", "off") if include_age else "off"
+                age_min   = kwargs.get("age_min", 0)
+                age_max   = kwargs.get("age_max", 0)
+                age_fixed = kwargs.get("age_fixed", 0)
+                extra     = kwargs.get("extra_attributes", "")
+                cat_args  = _collect_category_args(kwargs, keys)
+                result    = generate_person(seed, randomize, sex, cat_args,
+                                            age_mode, age_min, age_max, age_fixed, extra)
+                dmap = person_dict(result)
+                return io.NodeOutput(*(dmap[name] for name in output_names))
+
+        _RandomPersonV3.__name__ = node_id + "V3"
+        _RandomPersonV3.__qualname__ = _RandomPersonV3.__name__
+        return _RandomPersonV3
+
+    _V3_NODES = [_make_v3_node(*spec) for spec in NODE_SPECS]
 
     class RandomPersonExtension(ComfyExtension):
         async def get_node_list(self):
-            return [RandomPersonNodeV3]
+            return _V3_NODES
 
     async def comfy_entrypoint() -> "RandomPersonExtension":
         return RandomPersonExtension()
