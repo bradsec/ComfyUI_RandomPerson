@@ -163,6 +163,7 @@ _SEX_TIP    = "random, male, or female. male/female filter the sex-specific drop
 _MODE_TIP   = "How this attribute is chosen: random (any), allow_list (subset you list), fixed (the dropdown value), off (omit it)."
 _ALLOW_TIP  = "Comma-separated values used when mode=allow_list. Unknown values are added as literal descriptors."
 _FIXED_TIP  = "Exact value used when mode=fixed. (none) falls back to random."
+_AGEMODE_TIP = "How to pick the age: random within range, fixed value, or off (no age in the description)."
 _AGEMIN_TIP = "Minimum age. 0 = no lower bound (defaults to 21). Cannot go below 21."
 _AGEMAX_TIP = "Maximum age. 0 = no upper bound (defaults to 90). Minimum is always 21."
 _AGEFIX_TIP = "Exact age when mode=fixed. 0 = ignored. Values below 21 are clamped to 21."
@@ -210,7 +211,7 @@ def _best_match(full_list, token):
     return candidates[0]
 
 
-def resolve(mode, full_list, allow_str="", fixed_val=""):
+def resolve(mode, full_list, allow_str="", fixed_val="", rng=random):
     """Pick one item from full_list according to mode. Returns None if off."""
     if mode == "off":
         return None
@@ -243,13 +244,13 @@ def resolve(mode, full_list, allow_str="", fixed_val=""):
 
         pool = deduped + [{"label": s, "description": s} for s in custom_strings]
         if pool:
-            return random.choice(pool)
+            return rng.choice(pool)
         print(f"[RandomPersonNode] WARNING: allow_list '{allow_str}' matched nothing - using random.")
 
-    return random.choice(full_list)
+    return rng.choice(full_list)
 
 
-def resolve_age(mode, age_min, age_max, age_fixed_val, all_ages):
+def resolve_age(mode, age_min, age_max, age_fixed_val, all_ages, rng=random):
     if mode == "off":
         return None
     if mode == "fixed" and age_fixed_val > 0:
@@ -266,7 +267,7 @@ def resolve_age(mode, age_min, age_max, age_fixed_val, all_ages):
     if not pool:
         print(f"[RandomPersonNode] WARNING: no ages in {lo}-{hi} - using full list.")
         pool = all_ages
-    return random.choice(pool)
+    return rng.choice(pool)
 
 
 def d(item, key="description"):
@@ -389,10 +390,11 @@ def generate_person(seed, randomize, sex, category_args,
     RETURN_NAMES.
     """
     if randomize:
-        seed = random.randint(0, 0xFFFFFFFF)
-    random.seed(seed)
+        seed = random.randint(0, 0xFFFFFFFFFFFFFFFF)
+    # Local RNG: never seed the process-wide random module; other nodes share it.
+    rng = random.Random(seed)
 
-    resolved_sex = sex if sex in ("male", "female") else random.choice(["male", "female"])
+    resolved_sex = sex if sex in ("male", "female") else rng.choice(["male", "female"])
 
     def load_list(key):
         sub = resolved_sex if key in SEX_GATED else "shared"
@@ -401,8 +403,8 @@ def generate_person(seed, randomize, sex, category_args,
     p = {}
     for key, _, _ in CATEGORY_SPECS:
         mode, allow, fixed = category_args[key]
-        p[key] = resolve(mode, load_list(key), allow, fixed)
-    age = resolve_age(age_mode, age_min, age_max, age_fixed, load_shared("age.json"))
+        p[key] = resolve(mode, load_list(key), allow, fixed, rng=rng)
+    age = resolve_age(age_mode, age_min, age_max, age_fixed, load_shared("age.json"), rng=rng)
 
     description = build_description(
         resolved_sex, p["nationality"], age, p["skin_texture"],
@@ -534,7 +536,7 @@ def make_v1_node(node_id, display_name, keys, include_age, output_names):
         @classmethod
         def INPUT_TYPES(cls):
             required = {
-                "seed":      ("INT",     {"default": 0, "min": 0, "max": 0xFFFFFFFF, "tooltip": _SEED_TIP}),
+                "seed":      ("INT",     {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF, "tooltip": _SEED_TIP}),
                 "randomize": ("BOOLEAN", {"default": True, "tooltip": _RAND_TIP}),
                 "sex":       (SEX_MODES, {"default": "random", "tooltip": _SEX_TIP}),
             }
@@ -546,7 +548,7 @@ def make_v1_node(node_id, display_name, keys, include_age, output_names):
                                                             "placeholder": placeholder, "tooltip": _ALLOW_TIP})
                 required[f"{key}_fixed"]      = (fixed_labels, {"default": "(none)", "tooltip": _FIXED_TIP})
             if include_age:
-                required["age_mode"]  = (AGE_MODES, {"default": "random"})
+                required["age_mode"]  = (AGE_MODES, {"default": "random", "tooltip": _AGEMODE_TIP})
                 required["age_min"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMIN_TIP})
                 required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
                 required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
@@ -600,7 +602,7 @@ try:
             @classmethod
             def define_schema(cls) -> io.Schema:
                 inputs = [
-                    io.Int.Input("seed", default=0, min=0, max=0xFFFFFFFF, tooltip=_SEED_TIP),
+                    io.Int.Input("seed", default=0, min=0, max=0xFFFFFFFFFFFFFFFF, tooltip=_SEED_TIP),
                     io.Boolean.Input("randomize", default=True, tooltip=_RAND_TIP),
                     io.Combo.Input("sex", options=SEX_MODES, default="random", tooltip=_SEX_TIP),
                 ]
@@ -615,7 +617,7 @@ try:
                     ]
                 if include_age:
                     inputs += [
-                        io.Combo.Input("age_mode", options=AGE_MODES, default="random"),
+                        io.Combo.Input("age_mode", options=AGE_MODES, default="random", tooltip=_AGEMODE_TIP),
                         io.Int.Input("age_min", default=0, min=0, max=90, tooltip=_AGEMIN_TIP),
                         io.Int.Input("age_max", default=0, min=0, max=90, tooltip=_AGEMAX_TIP),
                         io.Int.Input("age_fixed", default=0, min=0, max=90, tooltip=_AGEFIX_TIP),

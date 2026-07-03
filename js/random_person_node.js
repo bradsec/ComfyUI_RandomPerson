@@ -122,7 +122,7 @@ app.registerExtension({
         }
     },
 
-    // Re-apply after workflow load — widget values are restored before nodeCreated fires
+    // Re-apply after workflow load: widget values are restored before nodeCreated fires
     async nodeCreated(node) {
         if (!GATED_NODE_IDS.has(node.comfyClass)) return;
         const sexWidget = node.widgets?.find(w => w.name === "sex");
