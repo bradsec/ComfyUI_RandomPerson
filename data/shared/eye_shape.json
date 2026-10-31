@@ -36,15 +36,15 @@
     "description": "downturned"
   },
   {
-    "label": "heavy-lidded",
-    "description": "heavy-lidded"
-  },
-  {
     "label": "narrow",
     "description": "narrow"
   },
   {
     "label": "large",
-    "description": "large, expressive"
+    "description": "large"
+  },
+  {
+    "label": "prominent",
+    "description": "prominent"
   }
 ]

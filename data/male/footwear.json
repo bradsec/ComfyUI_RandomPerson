@@ -24,7 +24,7 @@
   { "label": "hiking boots",      "description": "hiking boots" },
   { "label": "work boots",        "description": "work boots" },
   { "label": "ankle boots",       "description": "ankle boots" },
-  { "label": "formal shoes",      "description": "formal shoes" },
   { "label": "tactical boots",    "description": "tactical boots" },
-  { "label": "hiking shoes",      "description": "hiking shoes" }
+  { "label": "hiking shoes",      "description": "hiking shoes" },
+  {"label": "rubber rain boots", "description": "rubber rain boots"}
 ]

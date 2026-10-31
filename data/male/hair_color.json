@@ -25,7 +25,7 @@
   },
   {
     "label": "warm honey",
-    "description": "warm honey"
+    "description": "honey blonde"
   },
   {
     "label": "golden blonde",
@@ -50,10 +50,6 @@
   {
     "label": "white",
     "description": "white"
-  },
-  {
-    "label": "black",
-    "description": "black"
   },
   {
     "label": "brown",
@@ -90,10 +86,6 @@
   {
     "label": "dark red",
     "description": "dark red"
-  },
-  {
-    "label": "grey",
-    "description": "grey"
   },
   {
     "label": "dark grey",

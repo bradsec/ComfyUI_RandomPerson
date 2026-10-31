@@ -62,6 +62,6 @@
   { "label": "Cuban",         "descriptor": "Cuban",         "from": "from Cuba"            },
   { "label": "Venezuelan",    "descriptor": "Venezuelan",    "from": "from Venezuela"       },
   { "label": "Chilean",       "descriptor": "Chilean",       "from": "from Chile"           },
-  { "label": "Maori",         "descriptor": "Maori",         "from": "from New Zealand"     },
+  {"label": "Māori", "descriptor": "Māori"},
   { "label": "Samoan",        "descriptor": "Samoan",        "from": "from Samoa"           }
 ]

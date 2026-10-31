@@ -24,7 +24,6 @@
   { "label": "hiking boots",      "description": "hiking boots" },
   { "label": "work boots",        "description": "work boots" },
   { "label": "ankle boots",       "description": "ankle boots" },
-  { "label": "formal shoes",      "description": "formal shoes" },
   { "label": "tactical boots",    "description": "tactical boots" },
   { "label": "hiking shoes",      "description": "hiking shoes" },
   { "label": "high heels",        "description": "high heels" },
@@ -36,5 +35,5 @@
   { "label": "ballet flats",      "description": "ballet flats" },
   { "label": "mary janes",        "description": "mary janes" },
   { "label": "knee-high boots",   "description": "knee-high boots" },
-  { "label": "high boots",        "description": "high boots" }
+  {"label": "rubber rain boots", "description": "rubber rain boots"}
 ]

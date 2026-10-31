@@ -53,7 +53,7 @@
   },
   {
     "label": "small ear piercings",
-    "description": "small ear piercings"
+    "description": "small stud earrings in both ears"
   },
   {
     "label": "nose ring",
@@ -98,5 +98,13 @@
   {
     "label": "bindi",
     "description": "a bindi"
+  },
+  {
+    "label": "hearing aids",
+    "description": "small hearing aids"
+  },
+  {
+    "label": "head wrap",
+    "description": "a cloth head wrap"
   }
 ]

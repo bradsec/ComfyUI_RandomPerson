@@ -8,18 +8,6 @@
     "description": "clear skin"
   },
   {
-    "label": "dewy",
-    "description": "dewy skin"
-  },
-  {
-    "label": "glowing",
-    "description": "glowing skin"
-  },
-  {
-    "label": "matte",
-    "description": "matte skin"
-  },
-  {
     "label": "oily",
     "description": "an oily sheen"
   },
@@ -53,7 +41,7 @@
   },
   {
     "label": "ruddy",
-    "description": "a ruddy complexion"
+    "description": "redness across the cheeks"
   },
   {
     "label": "fine lines",
@@ -74,5 +62,13 @@
   {
     "label": "leathery",
     "description": "leathery, sun-aged skin"
+  },
+  {
+    "label": "visible pores",
+    "description": "natural visible pores"
+  },
+  {
+    "label": "under-eye lines",
+    "description": "fine lines under the eyes"
   }
 ]

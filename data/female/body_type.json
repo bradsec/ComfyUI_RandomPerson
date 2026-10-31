@@ -16,16 +16,8 @@
     "description": "petite build"
   },
   {
-    "label": "slight",
-    "description": "slight build"
-  },
-  {
     "label": "average",
     "description": "average build"
-  },
-  {
-    "label": "medium build",
-    "description": "medium build"
   },
   {
     "label": "athletic",
@@ -65,7 +57,7 @@
   },
   {
     "label": "softly built",
-    "description": "softly built build"
+    "description": "soft build"
   },
   {
     "label": "heavyset",
@@ -74,5 +66,13 @@
   {
     "label": "stocky",
     "description": "stocky build"
+  },
+  {
+    "label": "broad build",
+    "description": "broad build"
+  },
+  {
+    "label": "soft midsection",
+    "description": "soft-bellied build"
   }
 ]

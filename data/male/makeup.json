@@ -2,5 +2,17 @@
   {
     "label": "none",
     "description": ""
+  },
+  {
+    "label": "subtle concealer",
+    "description": "subtle concealer"
+  },
+  {
+    "label": "eyeliner",
+    "description": "black eyeliner"
+  },
+  {
+    "label": "red lipstick",
+    "description": "red lipstick"
   }
 ]

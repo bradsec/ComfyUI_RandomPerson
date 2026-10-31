@@ -30,5 +30,8 @@
   { "label": "business casual",   "description": "business-casual attire" },
   { "label": "formal wear",       "description": "formal attire" },
   { "label": "loungewear",        "description": "loungewear" },
-  { "label": "beachwear",         "description": "beachwear" }
+  { "label": "beachwear",         "description": "beachwear" },
+  {"label": "linen shirt", "description": "a loose linen shirt"},
+  {"label": "overalls", "description": "denim overalls"},
+  {"label": "raincoat", "description": "a hooded raincoat"}
 ]

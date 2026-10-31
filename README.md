@@ -83,13 +83,17 @@ The first pin is the full comma-separated description. Individual pins (`sex`, `
 
 ## Data files
 
-All values live in `data/` as plain JSON, split into `shared/`, `male/`, and `female/`. Edit them directly to add, remove, or change any value, no code changes needed. New entries take effect on the next ComfyUI restart.
+All values live in `data/` as plain JSON, split into `shared/`, `male/`, and `female/`. Edit them directly to add, remove, or change any value. New entries take effect on the next ComfyUI restart. Each file must contain a non-empty list with the required fields; invalid structure reports the file path and field at load time. The JavaScript sex-filter lists also need updating when sex-specific labels change.
 
 Each entry follows this structure:
 ```json
 { "label": "auburn", "description": "auburn" }
 ```
-The `label` appears in dropdowns; the `description` goes into the prompt. They can differ: eye colours use grounded descriptions (`"label": "green", "description": "muted natural green eyes"`), and `clean shaven` / `neutral` / `none` use an empty description so they add nothing.
+The `label` appears in dropdowns; the `description` goes into the prompt. They can differ: eye colours use grounded descriptions (`"label": "green", "description": "muted green eyes"`), and `clean shaven` / `neutral` / `none` use an empty description so they add nothing. Nationality entries use `label` and `descriptor`; shared face features are strings.
+
+Random hair styles respect the selected hair length, and random chest and shoulder choices avoid clear conflicts with slim, lean, slight, or petite builds. Allow lists draw from compatible choices when possible; if none fit, the node keeps your listed choices. Bundled labels use their bundled descriptions, and custom values remain literal. If you fix both conflicting values, the node keeps both. Bust size and shape join as `<size> <shape> bust`. When both non-zero age bounds are given, `age_min` must not exceed `age_max`.
+
+Removed labels may remain in saved workflow widgets. A removed `fixed` label can match a remaining entry through fuzzy matching; otherwise the node warns and picks randomly. A removed `allow_list` label can likewise match a remaining entry; an unmatched value becomes a literal descriptor. Re-select affected values after loading older workflows.
 
 ## Testing
 
@@ -102,11 +106,11 @@ python -m unittest test_random_person -v
 
 ## Requirements
 
-- ComfyUI (any recent version, Nodes 2.0 compatible)
+- ComfyUI with either the V3 `comfy_api.v0_0_2` symbols or the legacy V1 node API
 - Python 3.10+
 - No additional pip packages required
 
-The node registers on both the legacy V1 dict API (`NODE_CLASS_MAPPINGS`) and the V3 schema API (`comfy_entrypoint`), so it loads on older and newer ComfyUI builds alike.
+The package exports `comfy_entrypoint` when the required V3 symbols exist. Otherwise it exports `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for V1. It never exports both registration paths. The V3 adapter was source-reviewed against ComfyUI backend 0.42.0, but no ComfyUI runtime version was tested. Unit tests ran with Python 3.13.5.
 
 ## Support
 

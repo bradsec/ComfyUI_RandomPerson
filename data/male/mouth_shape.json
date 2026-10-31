@@ -6,6 +6,5 @@
   { "label": "downturned mouth",    "description": "downturned mouth" },
   { "label": "upturned mouth",      "description": "naturally upturned mouth" },
   { "label": "defined cupids bow",  "description": "defined cupid's bow" },
-  { "label": "prominent lower lip", "description": "prominent lower lip" },
-  { "label": "wide set lips",       "description": "wide-set lips" }
+  { "label": "prominent lower lip", "description": "prominent lower lip" }
 ]

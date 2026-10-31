@@ -12,14 +12,6 @@
     "description": "a warm smile"
   },
   {
-    "label": "slight smile",
-    "description": "a slight smile"
-  },
-  {
-    "label": "gentle smile",
-    "description": "a gentle smile"
-  },
-  {
     "label": "serious",
     "description": "a serious expression"
   },
@@ -37,7 +29,7 @@
   },
   {
     "label": "confident",
-    "description": "a confident expression"
+    "description": "a direct, relaxed gaze"
   },
   {
     "label": "relaxed",

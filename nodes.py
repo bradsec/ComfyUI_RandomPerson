@@ -18,14 +18,13 @@ Per-category MODE:
 
 Age uses numeric age_min / age_max (0 = no bound) or age_fixed.
 
-Dual-API: the shared core (generate_person) is wrapped by a V1 class
-(NODE_CLASS_MAPPINGS, authoritative on the 0.25.0 if/elif loader) and an
-import-guarded V3 class (comfy_entrypoint) for builds whose loader prefers
-the comfy_api schema. node_id "RandomPersonNode" is fixed in both so the
-js/ sex-aware widget extension keeps matching.
+The shared core (generate_person) has V1 and V3 adapters. The package exports
+only the adapter supported by the available comfy_api symbols. node_id
+"RandomPersonNode" is fixed in both so the js/ extension keeps matching.
 """
 
 import json
+import importlib
 import os
 import random
 from functools import lru_cache
@@ -42,8 +41,28 @@ AGE_MODES = ["random", "fixed", "off"]
 def load(subdir, filename):
     # Parsed once per process. Callers must treat the result as read-only.
     # Matches the documented "edit data, restart ComfyUI" workflow.
-    with open(os.path.join(DATA_DIR, subdir, filename), encoding="utf-8") as f:
-        return json.load(f)
+    path = os.path.join(DATA_DIR, subdir, filename)
+    with open(path, encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{path}: invalid JSON at line {exc.lineno}, column {exc.colno}") from exc
+    if not isinstance(data, list) or not data:
+        raise ValueError(f"{path}: expected a non-empty list")
+    for index, item in enumerate(data):
+        if filename == "age.json":
+            if not isinstance(item, dict) or type(item.get("age")) is not int:
+                raise ValueError(f"{path}: [{index}].age must be an integer")
+        elif filename == "face_feature.json" and subdir == "shared":
+            if not isinstance(item, str) or not item:
+                raise ValueError(f"{path}: [{index}] must be a non-empty string")
+        else:
+            for field in (("label", "descriptor") if filename == "nationality.json" else ("label", "description")):
+                if not isinstance(item, dict) or not isinstance(item.get(field), str) or not item[field]:
+                    if field == "description" and isinstance(item, dict) and item.get(field) == "":
+                        continue
+                    raise ValueError(f"{path}: [{index}].{field} must be a string")
+    return data
 
 def load_shared(fn):    return load("shared", fn)
 def load_sex(sex, fn):  return load(sex, fn)
@@ -152,6 +171,46 @@ DEFAULT_OFF = {"skin_texture", "eyebrows", "face_feature", "facial_hair",
                "expression", "accessories", "makeup",
                "shoulders", "chest", "bust_size", "bust_shape", "clothing", "footwear"}
 
+# Styles with an explicit length requirement. Other styles fit any non-shaved length.
+_STYLE_LENGTHS = {
+    "buzz cut": {"very short", "short"}, "crew cut": {"very short", "short"},
+    "skin fade": {"very short", "short"}, "taper fade": {"very short", "short"},
+    "faux hawk": {"very short", "short", "medium"},
+    "pompadour": {"short", "medium"}, "quiff": {"short", "medium"},
+    "caesar cut": {"very short", "short"}, "french crop": {"very short", "short"},
+    "textured crop": {"very short", "short"}, "pixie": {"very short", "short"},
+    "cropped short": {"very short", "short"}, "bowl cut": {"short", "ear length"},
+    "chin length bob": {"chin length"}, "jaw length bob": {"chin length"},
+    "braids short": {"short", "ear length", "chin length"},
+    "locs short": {"short", "ear length", "chin length"},
+    "curly medium": {"medium", "shoulder"}, "messy medium": {"medium", "shoulder"},
+    "locs long": {"long", "very long"}, "braid over shoulder": {"shoulder", "long", "very long"},
+    "high ponytail": {"medium", "shoulder", "long", "very long"},
+    "low ponytail": {"medium", "shoulder", "long", "very long"},
+    "bun": {"medium", "shoulder", "long", "very long"},
+    "space buns": {"medium", "shoulder", "long", "very long"},
+    "half up": {"medium", "shoulder", "long", "very long"},
+    "updo": {"medium", "shoulder", "long", "very long"},
+    "chignon": {"medium", "shoulder", "long", "very long"},
+    "french braid": {"medium", "shoulder", "long", "very long"},
+    "fishtail braid": {"medium", "shoulder", "long", "very long"},
+}
+_SLENDER_BUILDS = {"slim", "slight", "petite", "lean", "tall lean"}
+_BROAD_CHESTS = {"barrel", "broad", "muscular"}
+_BROAD_SHOULDERS = {"broad", "muscular"}
+
+
+def _conflicts(key, item, other_key, other):
+    labels = {key: item["label"], other_key: other["label"]}
+    if {key, other_key} == {"hair_length", "hair_style"}:
+        length, style = labels["hair_length"], labels["hair_style"]
+        return length == "shaved" or (style in _STYLE_LENGTHS and length not in _STYLE_LENGTHS[style])
+    if {key, other_key} == {"body_type", "chest"}:
+        return labels["body_type"] in _SLENDER_BUILDS and labels["chest"] in _BROAD_CHESTS
+    if {key, other_key} == {"body_type", "shoulders"}:
+        return labels["body_type"] in _SLENDER_BUILDS and labels["shoulders"] in _BROAD_SHOULDERS
+    return False
+
 
 def _mode_default(key):
     return "off" if key in DEFAULT_OFF else "random"
@@ -164,8 +223,8 @@ _MODE_TIP   = "How this attribute is chosen: random (any), allow_list (subset yo
 _ALLOW_TIP  = "Comma-separated values used when mode=allow_list. Unknown values are added as literal descriptors."
 _FIXED_TIP  = "Exact value used when mode=fixed. (none) falls back to random."
 _AGEMODE_TIP = "How to pick the age: random within range, fixed value, or off (no age in the description)."
-_AGEMIN_TIP = "Minimum age. 0 = no lower bound (defaults to 21). Cannot go below 21."
-_AGEMAX_TIP = "Maximum age. 0 = no upper bound (defaults to 90). Minimum is always 21."
+_AGEMIN_TIP = "Minimum age. 0 = no lower bound (defaults to 21). Cannot go below 21 or exceed age_max."
+_AGEMAX_TIP = "Maximum age. 0 = no upper bound (defaults to 90). Must not be below age_min."
 _AGEFIX_TIP = "Exact age when mode=fixed. 0 = ignored. Values below 21 are clamped to 21."
 _EXTRA_TIP  = "Free text appended to the description as-is, comma-separated. Pose, setting, props, extra detail, etc."
 
@@ -211,7 +270,7 @@ def _best_match(full_list, token):
     return candidates[0]
 
 
-def resolve(mode, full_list, allow_str="", fixed_val="", rng=random):
+def resolve(mode, full_list, allow_str="", fixed_val="", rng=random, compatible=None):
     """Pick one item from full_list according to mode. Returns None if off."""
     if mode == "off":
         return None
@@ -229,7 +288,10 @@ def resolve(mode, full_list, allow_str="", fixed_val="", rng=random):
         matched_items, custom_strings = [], []
         for t in tokens:
             tl = t.lower()
-            hits = [item for item in full_list if item_matches(item, tl) > 0]
+            hits = [item for item in full_list
+                    if (item.get("label", "") if isinstance(item, dict) else item).lower() == tl]
+            if not hits:
+                hits = [item for item in full_list if item_matches(item, tl) > 0]
             if hits:
                 matched_items.extend(hits)
             else:
@@ -244,13 +306,21 @@ def resolve(mode, full_list, allow_str="", fixed_val="", rng=random):
 
         pool = deduped + [{"label": s, "description": s} for s in custom_strings]
         if pool:
+            if compatible is not None:
+                allowed = {id(item) for item in compatible}
+                filtered = [item for item in deduped if id(item) in allowed]
+                filtered.extend(pool[len(deduped):])
+                pool = filtered or pool
             return rng.choice(pool)
         print(f"[RandomPersonNode] WARNING: allow_list '{allow_str}' matched nothing - using random.")
 
-    return rng.choice(full_list)
+    options = compatible if compatible is not None else full_list
+    return rng.choice(options) if options else None
 
 
 def resolve_age(mode, age_min, age_max, age_fixed_val, all_ages, rng=random):
+    if age_min > 0 and age_max > 0 and age_min > age_max:
+        raise ValueError("age_min must not exceed age_max")
     if mode == "off":
         return None
     if mode == "fixed" and age_fixed_val > 0:
@@ -261,8 +331,6 @@ def resolve_age(mode, age_min, age_max, age_fixed_val, all_ages, rng=random):
         print(f"[RandomPersonNode] WARNING: age {age_fixed_val} not in data - using random.")
     lo = max(age_min, 21) if age_min > 0 else 21
     hi = min(age_max, 90) if age_max > 0 else 90
-    if lo > hi:
-        lo, hi = hi, lo
     pool = [a for a in all_ages if lo <= a["age"] <= hi]
     if not pool:
         print(f"[RandomPersonNode] WARNING: no ages in {lo}-{hi} - using full list.")
@@ -292,7 +360,7 @@ def _bust_phrase(size_str, shape_str):
         return ""
     article = "an" if lead[:1].lower() in "aeiou" else "a"
     if size_str and shape_str:
-        return f"{article} {size_str}, {shape_str} bust"
+        return f"{article} {size_str} {shape_str} bust"
     return f"{article} {lead} bust"
 
 
@@ -401,9 +469,32 @@ def generate_person(seed, randomize, sex, category_args,
         return load(sub, f"{key}.json")
 
     p = {}
+    paired = {"hair_style", "hair_length", "body_type", "chest", "shoulders"}
+    for key in paired:
+        mode, _, fixed = category_args[key]
+        if mode == "fixed" and fixed.strip() != "(none)":
+            match = _best_match(load_list(key), fixed.strip().lower())
+            if match is not None:
+                p[key] = match
     for key, _, _ in CATEGORY_SPECS:
+        if key in p:
+            continue
+        if key == "hair_style" and "hair_length" not in p:
+            continue
         mode, allow, fixed = category_args[key]
-        p[key] = resolve(mode, load_list(key), allow, fixed, rng=rng)
+        options = load_list(key)
+        compatible = None
+        if key in paired and mode != "fixed":
+            compatible = [item for item in options if all(
+                not _conflicts(key, item, other_key, other)
+                for other_key, other in p.items() if other is not None)]
+        p[key] = resolve(mode, options, allow, fixed, rng=rng, compatible=compatible)
+    if "hair_style" not in p:
+        mode, allow, fixed = category_args["hair_style"]
+        options = load_list("hair_style")
+        compatible = [item for item in options if not p.get("hair_length")
+                      or not _conflicts("hair_style", item, "hair_length", p["hair_length"])]
+        p["hair_style"] = resolve(mode, options, allow, fixed, rng=rng, compatible=compatible)
     age = resolve_age(age_mode, age_min, age_max, age_fixed, load_shared("age.json"), rng=rng)
 
     description = build_description(
@@ -592,7 +683,20 @@ RandomPersonNode = NODE_CLASS_MAPPINGS["RandomPersonNode"]
 # -- V3 node factory (import-guarded comfy_api schema) -------------------------
 
 try:
-    from comfy_api.v0_0_2 import io, ComfyExtension
+    _comfy_api = importlib.import_module("comfy_api.v0_0_2")
+except ModuleNotFoundError as exc:
+    if exc.name not in ("comfy_api", "comfy_api.v0_0_2"):
+        raise
+    _comfy_api = None
+
+if (_comfy_api is not None and hasattr(_comfy_api, "ComfyExtension")
+        and hasattr(_comfy_api, "io")
+        and all(hasattr(_comfy_api.io, name) for name in
+                ("ComfyNode", "Schema", "NodeOutput", "Int", "Boolean", "Combo", "String"))
+        and all(hasattr(getattr(_comfy_api.io, name), "Input") for name in
+                ("Int", "Boolean", "Combo", "String"))
+        and all(hasattr(getattr(_comfy_api.io, name), "Output") for name in ("Int", "String"))):
+    io, ComfyExtension = _comfy_api.io, _comfy_api.ComfyExtension
 
     def _make_v3_node(node_id, display_name, keys, include_age, output_names):
         key_set = set(keys)
@@ -669,7 +773,3 @@ try:
 
     async def comfy_entrypoint() -> "RandomPersonExtension":
         return RandomPersonExtension()
-
-except ImportError:
-    # Older ComfyUI without comfy_api: V1 mappings above are the only path.
-    pass

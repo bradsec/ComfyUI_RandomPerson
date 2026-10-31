@@ -36,10 +36,6 @@
     "description": "stocky build"
   },
   {
-    "label": "broad shouldered",
-    "description": "broad-shouldered build"
-  },
-  {
     "label": "tall lean",
     "description": "tall and lean build"
   },
@@ -56,19 +52,23 @@
     "description": "heavyset build"
   },
   {
-    "label": "barrel chested",
-    "description": "barrel-chested build"
-  },
-  {
     "label": "compact",
     "description": "compact build"
   },
   {
     "label": "softly built",
-    "description": "softly built build"
+    "description": "soft build"
   },
   {
     "label": "dad bod",
-    "description": "dad bod build"
+    "description": "soft-bellied build"
+  },
+  {
+    "label": "broad build",
+    "description": "broad build"
+  },
+  {
+    "label": "soft midsection",
+    "description": "soft-bellied build"
   }
 ]

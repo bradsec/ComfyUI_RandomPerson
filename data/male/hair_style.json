@@ -1,15 +1,11 @@
 [
   {
     "label": "buzz cut",
-    "description": "buzz cut"
+    "description": "in a buzz cut"
   },
   {
     "label": "crew cut",
     "description": "crew cut"
-  },
-  {
-    "label": "cropped short",
-    "description": "cropped short"
   },
   {
     "label": "textured crop",
@@ -37,7 +33,7 @@
   },
   {
     "label": "messy medium",
-    "description": "messy medium"
+    "description": "in a tousled medium cut"
   },
   {
     "label": "curly medium",
@@ -53,7 +49,7 @@
   },
   {
     "label": "locs long",
-    "description": "long locs"
+    "description": "in long locs"
   },
   {
     "label": "cornrows",
@@ -61,7 +57,7 @@
   },
   {
     "label": "bun",
-    "description": "bun"
+    "description": "in a bun"
   },
   {
     "label": "low ponytail",
@@ -73,7 +69,7 @@
   },
   {
     "label": "taper fade",
-    "description": "taper fade"
+    "description": "in a taper fade"
   },
   {
     "label": "skin fade",
@@ -100,10 +96,6 @@
     "description": "faux hawk"
   },
   {
-    "label": "dreadlocks",
-    "description": "dreadlocks"
-  },
-  {
     "label": "afro",
     "description": "afro"
   },
@@ -122,5 +114,13 @@
   {
     "label": "mullet",
     "description": "mullet"
+  },
+  {
+    "label": "two strand twists",
+    "description": "in two-strand twists"
+  },
+  {
+    "label": "bantu knots",
+    "description": "in Bantu knots"
   }
 ]

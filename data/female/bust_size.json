@@ -1,8 +1,8 @@
 [
-  { "label": "petite",  "description": "petite" },
+  { "label": "petite",  "description": "small" },
   { "label": "small",   "description": "small" },
   { "label": "average", "description": "average" },
   { "label": "full",        "description": "full" },
   { "label": "large",       "description": "large" },
-  { "label": "extra large", "description": "extra large" }
+  { "label": "extra large", "description": "very large" }
 ]

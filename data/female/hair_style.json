@@ -1,7 +1,7 @@
 [
   {
     "label": "cropped short",
-    "description": "cropped short"
+    "description": "in a short crop"
   },
   {
     "label": "pixie",
@@ -13,7 +13,7 @@
   },
   {
     "label": "chin length bob",
-    "description": "chin-length bob"
+    "description": "in a chin-length bob"
   },
   {
     "label": "jaw length bob",
@@ -57,7 +57,7 @@
   },
   {
     "label": "high ponytail",
-    "description": "high ponytail"
+    "description": "in a high ponytail"
   },
   {
     "label": "low ponytail",
@@ -81,7 +81,7 @@
   },
   {
     "label": "curtain bangs",
-    "description": "curtain bangs"
+    "description": "with curtain bangs"
   },
   {
     "label": "space buns",
@@ -89,19 +89,11 @@
   },
   {
     "label": "twist out",
-    "description": "twist out"
+    "description": "in a twist-out"
   },
   {
     "label": "straight",
     "description": "straight"
-  },
-  {
-    "label": "curly",
-    "description": "curly"
-  },
-  {
-    "label": "wavy",
-    "description": "wavy"
   },
   {
     "label": "mohawk",
@@ -110,10 +102,6 @@
   {
     "label": "faux hawk",
     "description": "faux hawk"
-  },
-  {
-    "label": "dreadlocks",
-    "description": "dreadlocks"
   },
   {
     "label": "afro",
@@ -154,5 +142,13 @@
   {
     "label": "mullet",
     "description": "mullet"
+  },
+  {
+    "label": "two strand twists",
+    "description": "in two-strand twists"
+  },
+  {
+    "label": "bantu knots",
+    "description": "in Bantu knots"
   }
 ]

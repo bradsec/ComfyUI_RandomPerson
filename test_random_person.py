@@ -4,7 +4,16 @@ Pure logic, no ComfyUI required: reads the bundled data/ JSON only.
 Run: python -m unittest test_random_person -v
 """
 
+import asyncio
+import importlib.util
+import json
+import re
+import sys
+import tempfile
 import unittest
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import nodes as core
 
@@ -74,19 +83,19 @@ class TestSelection(unittest.TestCase):
         for key in ("nationality", "complexion", "eyes", "hair_color", "body_type"):
             self.assertEqual(req[f"{key}_mode"][1]["default"], "random", key)
 
-    def test_female_never_grows_facial_hair(self):
-        for seed in range(40):
-            self.assertEqual(run(seed=seed, sex="female")[7], "")  # facial_hair pin empty
+    def test_female_facial_hair_can_be_selected(self):
+        out = run(sex="female", facial_hair=("fixed", "", "chin hair"))
+        self.assertEqual(out[7], "a few visible chin hairs")
 
-    def test_male_makeup_empty(self):
-        for seed in range(40):
-            self.assertEqual(run(seed=seed, sex="male")[11], "")   # makeup pin empty
+    def test_male_makeup_can_be_selected(self):
+        out = run(sex="male", makeup=("fixed", "", "eyeliner"))
+        self.assertEqual(out[11], "black eyeliner")
 
     def test_skin_texture_in_complexion_pin(self):
-        out = run(skin_texture=("fixed", "", "dewy"),
+        out = run(skin_texture=("fixed", "", "visible pores"),
                   complexion=("fixed", "", "tan"))
         self.assertIn("tan", out[4])
-        self.assertIn("dewy", out[4])
+        self.assertIn("natural visible pores", out[4])
 
     def test_eye_shape_merges_into_eyes(self):
         # eye_shape sits in front of the eye colour, single "eyes" suffix, and
@@ -119,6 +128,10 @@ class TestSelection(unittest.TestCase):
 
 
 class TestAge(unittest.TestCase):
+
+    def test_reversed_age_bounds_name_inputs(self):
+        with self.assertRaisesRegex(ValueError, "age_min.*age_max"):
+            run(age_min=80, age_max=30)
 
     def test_age_off(self):
         out = run(age_mode="off")
@@ -234,12 +247,13 @@ class TestBodyData(unittest.TestCase):
         out = run(sex="female",
                   bust_size=("fixed", "", "full"),
                   bust_shape=("fixed", "", "round"))
-        self.assertIn("a full, round bust", out[0])
+        self.assertIn("a full round bust", out[0])
+
 
     def test_bust_size_only_female(self):
         out = run(sex="female", bust_size=("fixed", "", "petite"),
                   bust_shape=("off", "", "(none)"))
-        self.assertIn("a petite bust", out[0])
+        self.assertIn("a small bust", out[0])
 
     def test_shoulders_pin_present(self):
         names = core.RETURN_NAMES
@@ -274,6 +288,179 @@ class TestBodyData(unittest.TestCase):
                   bust_shape=("off", "", "(none)"))
         self.assertIn("a full bust", out[0])
 
+
+class TestReviewFixes(unittest.TestCase):
+
+    def _import_package(self, api):
+        package = "random_person_review_test"
+        spec = importlib.util.spec_from_file_location(
+            package, Path(__file__).parent / "__init__.py",
+            submodule_search_locations=[str(Path(__file__).parent)])
+        module = importlib.util.module_from_spec(spec)
+        original = core.importlib.import_module
+
+        def import_api(name, *args, **kwargs):
+            if name == "comfy_api.v0_0_2":
+                if isinstance(api, Exception):
+                    raise api
+                return api
+            return original(name, *args, **kwargs)
+
+        sys.modules[package] = module
+        try:
+            with patch.object(core.importlib, "import_module", side_effect=import_api):
+                spec.loader.exec_module(module)
+            return module
+        finally:
+            sys.modules.pop(package, None)
+            sys.modules.pop(package + ".nodes", None)
+
+    def test_v1_only_when_v3_symbols_missing(self):
+        module = self._import_package(SimpleNamespace(io=SimpleNamespace()))
+        self.assertTrue(hasattr(module, "NODE_CLASS_MAPPINGS"))
+        self.assertFalse(hasattr(module, "comfy_entrypoint"))
+
+    def test_v1_only_when_comfy_api_missing(self):
+        error = ModuleNotFoundError("No module named 'comfy_api'", name="comfy_api")
+        module = self._import_package(error)
+        self.assertEqual(len(module.NODE_CLASS_MAPPINGS), 6)
+        self.assertFalse(hasattr(module, "comfy_entrypoint"))
+
+    def test_v3_only_when_symbols_present(self):
+        class Kind:
+            @staticmethod
+            def Input(*args, **kwargs):
+                return args, kwargs
+
+            Output = Input
+
+        class ComfyNode:
+            pass
+
+        class ComfyExtension:
+            pass
+
+        class NodeOutput(tuple):
+            def __new__(cls, *args):
+                return super().__new__(cls, args)
+
+        io = SimpleNamespace(ComfyNode=ComfyNode, Schema=lambda **kwargs: kwargs,
+                             NodeOutput=NodeOutput, Int=Kind, Boolean=Kind,
+                             Combo=Kind, String=Kind)
+        module = self._import_package(SimpleNamespace(io=io, ComfyExtension=ComfyExtension))
+        self.assertTrue(hasattr(module, "comfy_entrypoint"))
+        self.assertFalse(hasattr(module, "NODE_CLASS_MAPPINGS"))
+        extension = asyncio.run(module.comfy_entrypoint())
+        nodes = asyncio.run(extension.get_node_list())
+        self.assertEqual({node.define_schema()["node_id"] for node in nodes},
+                         {spec[0] for spec in core.NODE_SPECS})
+        self.assertIsInstance(nodes[0].execute(1, False, "male"), NodeOutput)
+
+    def test_v3_dependency_import_error_propagates(self):
+        error = ModuleNotFoundError("missing internal dependency", name="internal_dependency")
+        with self.assertRaisesRegex(ModuleNotFoundError, "internal dependency"):
+            self._import_package(error)
+
+    def test_data_validation_reports_path_and_field(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / "shared" / "eyes.json"
+            path.parent.mkdir()
+            path.write_text(json.dumps([{"label": "blue"}]))
+            with patch.object(core, "DATA_DIR", root):
+                core.load.cache_clear()
+                with self.assertRaisesRegex(ValueError, r"eyes.json.*description"):
+                    core.load("shared", "eyes.json")
+                core.load.cache_clear()
+
+    def test_maori_saved_value_and_new_entries(self):
+        nationality = core.load_shared("nationality.json")
+        self.assertEqual(next(item for item in nationality if item["label"] == "Māori"),
+                         {"label": "Māori", "descriptor": "Māori"})
+        self.assertNotIn("Maori", {item["label"] for item in nationality})
+        self.assertEqual(core.resolve("allow_list", nationality, "Maori")["description"], "Maori")
+        self.assertIn("hearing aids", {item["label"] for item in core.load_shared("accessories.json")})
+        self.assertIn("chin hair", {item["label"] for item in core.load_sex("female", "facial_hair.json")})
+        self.assertIn("eyeliner", {item["label"] for item in core.load_sex("male", "makeup.json")})
+        self.assertEqual(next(item["description"] for item in core.load_shared("complexion.json")
+                              if item["label"] == "porcelain"), "very light neutral")
+        self.assertEqual(next(item["description"] for item in core.load_sex("female", "bust_size.json")
+                              if item["label"] == "petite"), "small")
+
+    def test_js_sex_lists_match_data(self):
+        script = (Path(__file__).parent / "js/random_person_node.js").read_text()
+        for sex, other in (("male", "female"), ("female", "male")):
+            section = re.search(rf"const {sex.upper()}_ONLY = \{{(.*?)\n\}};", script, re.S).group(1)
+            actual = {key: set(re.findall(r'"([^"]+)"', values))
+                      for key, values in re.findall(r"\s*(\w+)_fixed:\s*\[([^]]*)\]", section)}
+            expected = {}
+            for key in core.SEX_GATED:
+                labels = {item["label"] for item in core.load_sex(sex, f"{key}.json")}
+                others = {item["label"] for item in core.load_sex(other, f"{key}.json")}
+                expected[key] = labels - others
+            self.assertEqual(actual, expected)
+
+    def test_random_hair_and_body_avoid_clear_conflicts(self):
+        for sex in ("male", "female"):
+            for seed in range(200):
+                out = run(seed=seed, sex=sex)
+                hair = out[6]
+                self.assertNotIn("shaved hair worn", out[0], (sex, seed, out[0]))
+                self.assertFalse("long" in hair and "buzz cut" in hair, (sex, seed, hair))
+                if out[8] in {"slim build", "slight build", "petite build", "lean build", "tall and lean build"}:
+                    self.assertNotIn(out[13], {"a barrel chest", "a broad chest", "a muscular chest"})
+                    self.assertNotIn(out[12], {"broad shoulders", "muscular shoulders"})
+
+    def test_fixed_one_side_filters_random_other_side(self):
+        for seed in range(80):
+            long_hair = run(seed=seed, sex="male", hair_length=("fixed", "", "long"))
+            self.assertNotIn("buzz cut", long_hair[6])
+            self.assertNotIn("faux hawk", long_hair[6])
+            buzz = run(seed=seed, sex="male", hair_style=("fixed", "", "buzz cut"))
+            self.assertNotIn("long", buzz[6])
+            slim = run(seed=seed, sex="male", body_type=("fixed", "", "slim"))
+            self.assertNotIn(slim[13], {"a barrel chest", "a broad chest", "a muscular chest"})
+            broad = run(seed=seed, sex="male", chest=("fixed", "", "broad"))
+            self.assertNotIn(broad[8], {"slim build", "slight build", "lean build"})
+
+    def test_explicit_incompatible_values_remain(self):
+        out = run(sex="male", hair_length=("fixed", "", "long"),
+                  hair_style=("fixed", "", "buzz cut"), body_type=("fixed", "", "slim"),
+                  chest=("fixed", "", "barrel"))
+        self.assertIn("buzz cut", out[6])
+        self.assertEqual(out[13], "a barrel chest")
+
+    def test_incompatible_bundled_hair_allow_list_keeps_description(self):
+        out = run(sex="male", hair_style=("fixed", "", "buzz cut"),
+                  hair_length=("allow_list", "long", "(none)"))
+        self.assertIn("long in a buzz cut", out[6])
+        out = run(sex="male", hair_length=("fixed", "", "long"),
+                  hair_style=("allow_list", "buzz cut", "(none)"))
+        self.assertIn("in a buzz cut", out[6])
+
+    def test_incompatible_bundled_body_allow_list_keeps_description(self):
+        for key, label, pin in (("chest", "barrel", 13), ("shoulders", "broad", 12)):
+            with self.subTest(key=key):
+                out = run(sex="male", body_type=("fixed", "", "slim"),
+                          **{key: ("allow_list", label, "(none)")})
+                expected = "a barrel chest" if key == "chest" else "broad shoulders"
+                self.assertEqual(out[pin], expected)
+
+    def test_mixed_bundled_allow_list_filters_incompatible_choices(self):
+        for seed in range(20):
+            out = run(seed=seed, sex="male", hair_style=("fixed", "", "buzz cut"),
+                      hair_length=("allow_list", "long, short", "(none)"),
+                      body_type=("fixed", "", "slim"),
+                      chest=("allow_list", "barrel, flat", "(none)"),
+                      shoulders=("allow_list", "broad, narrow", "(none)"))
+            self.assertIn("short in a buzz cut", out[6])
+            self.assertNotIn("very short", out[6])
+            self.assertEqual(out[13], "a flat chest")
+            self.assertEqual(out[12], "narrow shoulders")
+
+    def test_custom_paired_allow_list_remains_literal(self):
+        out = run(sex="male", body_type=("fixed", "", "slim"),
+                  chest=("allow_list", "custom chest", "(none)"))
+        self.assertEqual(out[13], "custom chest")
 
 class TestSegmentNodes(unittest.TestCase):
 

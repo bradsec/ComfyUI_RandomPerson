@@ -2,5 +2,13 @@
   {
     "label": "clean shaven",
     "description": ""
+  },
+  {
+    "label": "light facial hair",
+    "description": "fine facial hair above the upper lip"
+  },
+  {
+    "label": "chin hair",
+    "description": "a few visible chin hairs"
   }
 ]

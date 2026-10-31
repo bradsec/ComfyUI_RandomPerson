@@ -60,10 +60,6 @@
     "description": "white"
   },
   {
-    "label": "black",
-    "description": "black"
-  },
-  {
     "label": "brown",
     "description": "brown"
   },
@@ -92,16 +88,8 @@
     "description": "sandy blonde"
   },
   {
-    "label": "red",
-    "description": "red"
-  },
-  {
     "label": "dark red",
     "description": "dark red"
-  },
-  {
-    "label": "grey",
-    "description": "grey"
   },
   {
     "label": "dark grey",
