@@ -106,6 +106,8 @@ cd ComfyUI_RandomPerson
 python3 -m unittest test_random_person -v
 ```
 
+GitHub Actions runs these tests on Python 3.10 and 3.15, plus `node --check js/*.js` and `node test_attribute_order.cjs`, for pushes and pull requests to `main`. Publishing waits for those checks.
+
 ## Requirements
 
 - ComfyUI with either the V3 `comfy_api.v0_0_2` symbols or the legacy V1 node API
