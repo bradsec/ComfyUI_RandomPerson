@@ -112,7 +112,7 @@ python3 -m unittest test_random_person -v
 - Python 3.10+
 - No additional pip packages required
 
-Version 1.4.0 exports `comfy_entrypoint` when the required V3 symbols exist. Otherwise it exports `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for V1. It never exports both registration paths. Tested live on ComfyUI 0.43.0 with frontend 1.57.6. Unit tests passed with Python 3.13.5.
+The package exports `comfy_entrypoint` when the required V3 symbols exist. Otherwise it exports `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for V1. It never exports both registration paths. Version 1.4.0 was tested live on ComfyUI 0.43.0 with frontend 1.57.6. Unit tests passed with Python 3.13.5.
 
 ## Support
 
