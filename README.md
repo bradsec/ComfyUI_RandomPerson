@@ -27,7 +27,7 @@ Each node's first output pin is its full description, named per node: `full_desc
 
 **Example output (female):**
 ```
-43 year old Russian female, angular face, light medium complexion, smooth skin, natural grey eyes, button nose, wide-set lips, a faint scar through one eyebrow, red very short hair worn twist out, muscular build, reading glasses, bold lipstick
+43 year old Russian female, angular face, light medium complexion, smooth skin, grey eyes, button nose, wide mouth, a faint scar through one eyebrow, dark red very short hair worn in a twist-out, muscular build, reading glasses, bold lipstick
 ```
 
 ## Installation
@@ -62,7 +62,7 @@ Core identity categories default to `random`. Optional "flair" categories (skin 
 
 ### Sex
 
-Dropdown: `random` / `male` / `female`. When set, per-category dropdowns filter to sex-appropriate options. Facial hair and makeup are sex-specific: females never grow facial hair, males have no makeup.
+Dropdown: `random` / `male` / `female`. When set, per-category dropdowns filter to sex-appropriate options. Female facial hair includes light facial hair and chin hair; male makeup includes subtle concealer, eyeliner, and red lipstick.
 
 ### Seed
 
@@ -71,7 +71,7 @@ Dropdown: `random` / `male` / `female`. When set, per-category dropdowns filter 
 
 ### Age
 
-`age_mode` (`random` / `fixed` / `off`), `age_min`, `age_max` (0 = no bound, defaults to 90), `age_fixed`. Values below 21 are clamped to 21.
+`age_mode` (`random` / `fixed` / `off`), `age_min` (0 defaults to 21), `age_max` (0 defaults to 90), `age_fixed`. An `age_min` or `age_fixed` below 21 uses 21. If both bounds are non-zero, `age_min` must not exceed `age_max`, or the node raises `ValueError`. If the range contains no ages, the node uses the full age list.
 
 ### Extra attributes
 
@@ -83,7 +83,7 @@ The first pin is the full comma-separated description. Individual pins (`sex`, `
 
 ## Data files
 
-All values live in `data/` as plain JSON, split into `shared/`, `male/`, and `female/`. Edit them directly to add, remove, or change any value. New entries take effect on the next ComfyUI restart. Each file must contain a non-empty list with the required fields; invalid structure reports the file path and field at load time. The JavaScript sex-filter lists also need updating when sex-specific labels change.
+All values live in `data/` as plain JSON, split into `shared/`, `male/`, and `female/`. Edit them directly to add, remove, or change any value. New entries take effect on the next ComfyUI restart. Each file must contain a non-empty list with the required fields. Invalid JSON reports the file path, line, and column; invalid entries report the file path, entry index, and field when applicable. The JavaScript sex-filter lists also need updating when sex-specific labels change.
 
 Each entry follows this structure:
 ```json
@@ -91,9 +91,9 @@ Each entry follows this structure:
 ```
 The `label` appears in dropdowns; the `description` goes into the prompt. They can differ: eye colours use grounded descriptions (`"label": "green", "description": "muted green eyes"`), and `clean shaven` / `neutral` / `none` use an empty description so they add nothing. Nationality entries use `label` and `descriptor`; shared face features are strings.
 
-Random hair styles respect the selected hair length, and random chest and shoulder choices avoid clear conflicts with slim, lean, slight, or petite builds. Allow lists draw from compatible choices when possible; if none fit, the node keeps your listed choices. Bundled labels use their bundled descriptions, and custom values remain literal. If you fix both conflicting values, the node keeps both. Bust size and shape join as `<size> <shape> bust`. When both non-zero age bounds are given, `age_min` must not exceed `age_max`.
+Random hair styles respect the selected hair length, and random chest and shoulder choices avoid clear conflicts with slim, lean, slight, or petite builds. A fixed value takes precedence over a conflicting random or allow-list choice. Allow lists draw from compatible bundled choices when possible; if none fit, the node keeps your listed choices. Bundled labels use their bundled descriptions, and custom values remain literal. If you fix both conflicting values, the node keeps both. Bust size and shape join as `a/an <size> <shape> bust`.
 
-Removed labels may remain in saved workflow widgets. A removed `fixed` label can match a remaining entry through fuzzy matching; otherwise the node warns and picks randomly. A removed `allow_list` label can likewise match a remaining entry; an unmatched value becomes a literal descriptor. Re-select affected values after loading older workflows.
+Removed labels may remain in saved workflow widgets. A removed `fixed` label can match a remaining entry through fuzzy matching; otherwise the node warns and picks randomly. A removed `allow_list` label can likewise match a remaining entry; an unmatched value becomes a literal descriptor. For example, the nationality label `Maori` is now `Māori`: an old `Maori` allow-list value remains literal, while an old fixed value falls back to random. Re-select affected values after loading older workflows.
 
 ## Testing
 
@@ -101,7 +101,7 @@ Unit tests cover the selection logic with no ComfyUI install required (they read
 
 ```
 cd ComfyUI_RandomPerson
-python -m unittest test_random_person -v
+python3 -m unittest test_random_person -v
 ```
 
 ## Requirements
@@ -110,7 +110,7 @@ python -m unittest test_random_person -v
 - Python 3.10+
 - No additional pip packages required
 
-The package exports `comfy_entrypoint` when the required V3 symbols exist. Otherwise it exports `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for V1. It never exports both registration paths. The V3 adapter was source-reviewed against ComfyUI backend 0.42.0, but no ComfyUI runtime version was tested. Unit tests ran with Python 3.13.5.
+Version 1.4.0 exports `comfy_entrypoint` when the required V3 symbols exist. Otherwise it exports `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for V1. It never exports both registration paths. Tested live on ComfyUI 0.43.0 with frontend 1.57.6. Unit tests passed with Python 3.13.5.
 
 ## Support
 
