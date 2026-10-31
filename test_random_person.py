@@ -31,6 +31,39 @@ def run(seed=123, randomize=False, sex="female", age_mode="random",
                                 age_mode, age_min, age_max, age_fixed, extra)
 
 
+UI_KEYS = ("nationality", "complexion", "skin_texture", "face_shape", "eye_shape",
+           "eyes", "eyebrows", "nose_shape", "mouth_shape", "face_feature",
+           "expression", "hair_color", "hair_length", "hair_style", "facial_hair",
+           "body_type", "shoulders", "chest", "bust_size", "bust_shape",
+           "accessories", "makeup", "clothing", "footwear")
+
+
+def expected_inputs(keys, include_age):
+    names = ["seed", "randomize", "sex"]
+    if include_age:
+        names += ["age_mode", "age_min", "age_max", "age_fixed"]
+    for key in UI_KEYS:
+        if key in keys:
+            names += [f"{key}_mode", f"{key}_allow_list", f"{key}_fixed"]
+    return names + ["extra_attributes"]
+
+
+class TestAttributeOrder(unittest.TestCase):
+    def test_v1_order_all_nodes(self):
+        for node_id, _, keys, include_age, _ in core.NODE_SPECS:
+            actual = list(core.NODE_CLASS_MAPPINGS[node_id].INPUT_TYPES()["required"])
+            self.assertEqual(actual, expected_inputs(keys, include_age), node_id)
+
+    def test_seed_golden_descriptions(self):
+        golden = {
+            0: "63 year old Israeli female, triangular face, very deep brown complexion, clear skin, downturned blue eyes, neatly groomed eyebrows, aquiline nose, defined cupid's bow, a softly cleft chin, blonde ear length hair worn loose curls, a few visible chin hairs, average build, broad shoulders, a small wide-set bust, a downcast expression, a beanie, minimal makeup, a jumpsuit, running shoes",
+            42: "21 year old Chinese female, round face, very light neutral complexion, a rosacea flush across the cheeks, monolid warm amber-brown eyes, arched eyebrows, low nose bridge, heart-shaped lips, high cheekbones, blonde shoulder length hair worn in a twist-out, slim build, narrow shoulders, a small round bust, a downcast expression, sunglasses, red lipstick, a puffer jacket, stilettos",
+            999: "24 year old Korean female, oblong face, rich dark brown complexion, leathery, sun-aged skin, hooded soft pale green eyes, feathered brows, low nose bridge, prominent lower lip, a small birthmark, warm brown ear length hair worn messy, tall and athletic build, square shoulders, a very large wide-set bust, one eyebrow raised, small hearing aids, bold makeup, sportswear, crocs",
+        }
+        for seed, description in golden.items():
+            self.assertEqual(run(seed=seed)[0], description, seed)
+
+
 class TestSelection(unittest.TestCase):
 
     def test_seed_reproducible(self):
@@ -354,6 +387,9 @@ class TestReviewFixes(unittest.TestCase):
         nodes = asyncio.run(extension.get_node_list())
         self.assertEqual({node.define_schema()["node_id"] for node in nodes},
                          {spec[0] for spec in core.NODE_SPECS})
+        for node, spec in zip(nodes, core.NODE_SPECS):
+            self.assertEqual([entry[0][0] for entry in node.define_schema()["inputs"]],
+                             expected_inputs(spec[2], spec[3]), spec[0])
         self.assertIsInstance(nodes[0].execute(1, False, "male"), NodeOutput)
 
     def test_v3_dependency_import_error_propagates(self):

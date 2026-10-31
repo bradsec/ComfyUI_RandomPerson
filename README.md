@@ -19,8 +19,6 @@ The nodes appear in the **Add Node** menu under **Random Person**:
 - **Random Person: Body** - build, shoulders, chest, bust size and shape.
 - **Random Person: Style** - accessories, makeup, clothing, footwear.
 
-![grid nodes](samples/gridnodes.jpg)
-
 The AIO node exposes every category at once. The segment nodes are independent generators: each has its own seed and sex and emits only its group's fragment. Use one alone, or wire several together (set the same `sex` on each) and concatenate their full description outputs with any string node to assemble a complete prompt.
 
 Each node's first output pin is its full description, named per node: `full_description` (AIO), `full_identity_description`, `full_face_description`, `full_hair_description`, `full_body_description`, `full_style_description`.
@@ -48,6 +46,10 @@ Each attribute category (nationality, complexion, eyes, hair, body type, etc.) h
 - **mode** - how the value is chosen (see below).
 - **allow_list** - comma-separated values to draw from when mode = `allow_list`. Accepts both labels from the data files and custom literal descriptors (e.g. `auburn, fire engine red`).
 - **fixed** - a specific value to always use when mode = `fixed`.
+
+Controls and sex appear first, followed by age on AIO and Identity, then identity, face, hair, body, style, and extra attributes. Each category shows its allow-list or fixed-value widget only when its mode uses it. Hidden values remain saved.
+
+Workflows saved before this widget reorder are migrated on load by the frontend extension. It uses saved widget names when available, otherwise the previous positional order. New saves carry a layout marker so they are not migrated twice. Existing seeds and output pins retain their meaning.
 
 ### Mode options
 

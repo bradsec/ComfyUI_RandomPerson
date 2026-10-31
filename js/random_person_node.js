@@ -50,6 +50,62 @@ const GATED_NODE_IDS = new Set([
     "RandomPersonStyle",
 ]);
 
+const OLD_KEYS = ["nationality", "complexion", "skin_texture", "eyes", "eye_shape",
+    "eyebrows", "face_shape", "nose_shape", "mouth_shape", "face_feature",
+    "hair_color", "hair_style", "hair_length", "facial_hair", "body_type",
+    "shoulders", "chest", "bust_size", "bust_shape", "expression", "accessories",
+    "makeup", "clothing", "footwear"];
+const NODE_KEYS = {
+    RandomPersonNode: OLD_KEYS,
+    RandomPersonIdentity: ["nationality", "complexion", "skin_texture"],
+    RandomPersonFace: ["eyes", "eye_shape", "eyebrows", "face_shape", "nose_shape", "mouth_shape", "face_feature", "expression"],
+    RandomPersonHair: ["hair_color", "hair_style", "hair_length", "facial_hair"],
+    RandomPersonBody: ["body_type", "shoulders", "chest", "bust_size", "bust_shape"],
+    RandomPersonStyle: ["accessories", "makeup", "clothing", "footwear"],
+};
+const NODE_IDS = new Set(Object.keys(NODE_KEYS));
+
+function oldWidgetNames(nodeId) {
+    const names = ["seed", "control_after_generate", "randomize", "sex"];
+    for (const key of NODE_KEYS[nodeId]) {
+        names.push(`${key}_mode`, `${key}_allow_list`, `${key}_fixed`);
+    }
+    if (nodeId === "RandomPersonNode" || nodeId === "RandomPersonIdentity") {
+        names.push("age_mode", "age_min", "age_max", "age_fixed");
+    }
+    return [...names, "extra_attributes"];
+}
+
+function migrateWidgetValues(info, nodeId, widgets) {
+    if (info.properties?.rp_widget_layout === 2 || !Array.isArray(info.widgets_values)) return info;
+    let named = info.widgets_values_named;
+    if (!named) {
+        let names = oldWidgetNames(nodeId);
+        if (info.widgets_values.length === names.length - 1) {
+            names = names.filter(name => name !== "control_after_generate");
+        }
+        if (info.widgets_values.length !== names.length) return info;
+        named = Object.fromEntries(names.map((name, i) => [name, info.widgets_values[i]]));
+    }
+    return {
+        ...info,
+        widgets_values: widgets.filter(w => w.serialize !== false).map(w =>
+            Object.hasOwn(named, w.name) ? named[w.name] : w.value),
+        properties: { ...info.properties, rp_widget_layout: 2 },
+    };
+}
+
+function applyModeVisibility(node) {
+    for (const key of NODE_KEYS[node.comfyClass] || []) {
+        const mode = node.widgets?.find(w => w.name === `${key}_mode`)?.value;
+        for (const suffix of ["allow_list", "fixed"]) {
+            const widget = node.widgets?.find(w => w.name === `${key}_${suffix}`);
+            if (widget) widget.hidden = mode !== suffix;
+        }
+    }
+    node.setDirtyCanvas?.(true, true);
+}
+
 // ── Apply sex filter to all gated widgets on a node ───────────────────────────
 
 function applyFilters(node, sex) {
@@ -84,7 +140,14 @@ app.registerExtension({
     name: "RandomPersonNode.SexAwareWidgets",
 
     async beforeRegisterNodeDef(nodeType, nodeData) {
-        if (!GATED_NODE_IDS.has(nodeData.name)) return;
+        if (!NODE_IDS.has(nodeData.name)) return;
+
+        const configure = nodeType.prototype.configure;
+        nodeType.prototype.configure = function (info) {
+            const result = configure.call(this, migrateWidgetValues(info, nodeData.name, this.widgets || []));
+            applyModeVisibility(this);
+            return result;
+        };
 
         const onNodeCreated = nodeType.prototype.onNodeCreated;
         nodeType.prototype.onNodeCreated = function () {
@@ -92,6 +155,20 @@ app.registerExtension({
 
             // Default width
             if (this.size) this.size[0] = 420;
+            this.properties ??= {};
+            this.properties.rp_widget_layout = 2;
+
+            for (const key of NODE_KEYS[nodeData.name]) {
+                const mode = this.widgets?.find(w => w.name === `${key}_mode`);
+                if (!mode) continue;
+                const callback = mode.callback;
+                const node = this;
+                mode.callback = function (value) {
+                    callback?.call(this, value);
+                    applyModeVisibility(node);
+                };
+            }
+            applyModeVisibility(this);
 
             // Watch the sex widget
             const sexWidget = this.widgets?.find(w => w.name === "sex");
@@ -123,6 +200,8 @@ app.registerExtension({
 
     // Re-apply after workflow load: widget values are restored before nodeCreated fires
     async nodeCreated(node) {
+        if (!NODE_IDS.has(node.comfyClass)) return;
+        setTimeout(() => applyModeVisibility(node), 50);
         if (!GATED_NODE_IDS.has(node.comfyClass)) return;
         const sexWidget = node.widgets?.find(w => w.name === "sex");
         if (sexWidget) {

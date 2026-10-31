@@ -158,6 +158,17 @@ CATEGORY_SPECS = [
     ("footwear",     _FOOTWEAR_LABELS,     "e.g. sneakers, boots, sandals, heels"),
 ]
 
+# Display order is separate from CATEGORY_SPECS, whose order fixes seeded RNG draws.
+CATEGORY_UI_ORDER = (
+    "nationality", "complexion", "skin_texture", "face_shape", "eye_shape",
+    "eyes", "eyebrows", "nose_shape", "mouth_shape", "face_feature",
+    "expression", "hair_color", "hair_length", "hair_style", "facial_hair",
+    "body_type", "shoulders", "chest", "bust_size", "bust_shape",
+    "accessories", "makeup", "clothing", "footwear",
+)
+CATEGORY_UI_SPECS = [next(spec for spec in CATEGORY_SPECS if spec[0] == key)
+                     for key in CATEGORY_UI_ORDER]
+
 # Categories whose data lives under data/<sex>/ rather than data/shared/.
 SEX_GATED = {"hair_color", "hair_style", "hair_length", "body_type", "face_shape",
              "nose_shape", "mouth_shape", "face_feature", "facial_hair", "makeup",
@@ -631,18 +642,18 @@ def make_v1_node(node_id, display_name, keys, include_age, output_names):
                 "randomize": ("BOOLEAN", {"default": True, "tooltip": _RAND_TIP}),
                 "sex":       (SEX_MODES, {"default": "random", "tooltip": _SEX_TIP}),
             }
-            for key, fixed_labels, placeholder in CATEGORY_SPECS:
+            if include_age:
+                required["age_mode"]  = (AGE_MODES, {"default": "random", "tooltip": _AGEMODE_TIP})
+                required["age_min"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMIN_TIP})
+                required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
+                required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
+            for key, fixed_labels, placeholder in CATEGORY_UI_SPECS:
                 if key not in key_set:
                     continue
                 required[f"{key}_mode"]       = (MODES, {"default": _mode_default(key), "tooltip": _MODE_TIP})
                 required[f"{key}_allow_list"] = ("STRING", {"default": "", "multiline": False,
                                                             "placeholder": placeholder, "tooltip": _ALLOW_TIP})
                 required[f"{key}_fixed"]      = (fixed_labels, {"default": "(none)", "tooltip": _FIXED_TIP})
-            if include_age:
-                required["age_mode"]  = (AGE_MODES, {"default": "random", "tooltip": _AGEMODE_TIP})
-                required["age_min"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMIN_TIP})
-                required["age_max"]   = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEMAX_TIP})
-                required["age_fixed"] = ("INT", {"default": 0, "min": 0, "max": 90, "tooltip": _AGEFIX_TIP})
             required["extra_attributes"] = ("STRING", {"default": "", "multiline": True,
                                                        "placeholder": "Add any extra details to pass into the description, e.g. wearing a red scarf, holding a coffee, tattoo on left arm",
                                                        "tooltip": _EXTRA_TIP})
@@ -710,7 +721,14 @@ if (_comfy_api is not None and hasattr(_comfy_api, "ComfyExtension")
                     io.Boolean.Input("randomize", default=True, tooltip=_RAND_TIP),
                     io.Combo.Input("sex", options=SEX_MODES, default="random", tooltip=_SEX_TIP),
                 ]
-                for key, fixed_labels, placeholder in CATEGORY_SPECS:
+                if include_age:
+                    inputs += [
+                        io.Combo.Input("age_mode", options=AGE_MODES, default="random", tooltip=_AGEMODE_TIP),
+                        io.Int.Input("age_min", default=0, min=0, max=90, tooltip=_AGEMIN_TIP),
+                        io.Int.Input("age_max", default=0, min=0, max=90, tooltip=_AGEMAX_TIP),
+                        io.Int.Input("age_fixed", default=0, min=0, max=90, tooltip=_AGEFIX_TIP),
+                    ]
+                for key, fixed_labels, placeholder in CATEGORY_UI_SPECS:
                     if key not in key_set:
                         continue
                     inputs += [
@@ -718,13 +736,6 @@ if (_comfy_api is not None and hasattr(_comfy_api, "ComfyExtension")
                         io.String.Input(f"{key}_allow_list", default="", multiline=False,
                                         placeholder=placeholder, tooltip=_ALLOW_TIP),
                         io.Combo.Input(f"{key}_fixed", options=fixed_labels, default="(none)", tooltip=_FIXED_TIP),
-                    ]
-                if include_age:
-                    inputs += [
-                        io.Combo.Input("age_mode", options=AGE_MODES, default="random", tooltip=_AGEMODE_TIP),
-                        io.Int.Input("age_min", default=0, min=0, max=90, tooltip=_AGEMIN_TIP),
-                        io.Int.Input("age_max", default=0, min=0, max=90, tooltip=_AGEMAX_TIP),
-                        io.Int.Input("age_fixed", default=0, min=0, max=90, tooltip=_AGEFIX_TIP),
                     ]
                 inputs.append(
                     io.String.Input("extra_attributes", default="", multiline=True,
